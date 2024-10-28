@@ -54,7 +54,7 @@ public final class SuratButaWarna extends javax.swing.JDialog {
         setSize(628,674);
         
         tabMode=new DefaultTableModel(null,new Object[]{
-            "No.Surat","No.Rawat","No.R.M.","Nama Pasien","Tgl.Periksa","Hasil Pemeriksaan","Kode Dokter","Nm Dokter"
+            "No.Surat","No.Rawat","No.R.M.","Nama Pasien","Tgl.Periksa","Visus OD","Visus OS","Hasil Pemeriksaan","Kode Dokter","Nm Dokter"
         }){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -64,10 +64,10 @@ public final class SuratButaWarna extends javax.swing.JDialog {
         tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i <10; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
             if(i==0){
-                column.setPreferredWidth(105);
+                column.setPreferredWidth(130);
             }else if(i==1){
                 column.setPreferredWidth(105);
             }else if(i==2){
@@ -79,9 +79,13 @@ public final class SuratButaWarna extends javax.swing.JDialog {
             }else if(i==5){
                 column.setPreferredWidth(220);
             }else if(i==6){
+                column.setPreferredWidth(220);
+            }else if(i==7){
+                column.setPreferredWidth(220);
+            }else if(i==8){
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==7){
+            }else if(i==9){
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }
@@ -161,9 +165,21 @@ public final class SuratButaWarna extends javax.swing.JDialog {
         TPasien = new widget.TextBox();
         TNoRM = new widget.TextBox();
         jLabel13 = new widget.Label();
-        HasilPeriksa = new widget.ComboBox();
+        ButaWarna = new widget.ComboBox();
         jLabel14 = new widget.Label();
-        TanggalPeriksa = new widget.Tanggal();
+        TanggalSurat = new widget.Tanggal();
+        Lvod1 = new widget.Label();
+        Tvod1 = new widget.TextBox();
+        Lvod2 = new widget.Label();
+        Tvod2 = new widget.TextBox();
+        Lvod3 = new widget.Label();
+        Tvod3 = new widget.TextBox();
+        Tvos3 = new widget.TextBox();
+        Lvos3 = new widget.Label();
+        Tvos2 = new widget.TextBox();
+        Lvos2 = new widget.Label();
+        Tvos1 = new widget.TextBox();
+        Lvos1 = new widget.Label();
         ChkInput = new widget.CekBox();
 
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
@@ -189,6 +205,7 @@ public final class SuratButaWarna extends javax.swing.JDialog {
         internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Data Surat Keterangan Buta Warna ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
+        internalFrame1.setPreferredSize(new java.awt.Dimension(462, 449));
         internalFrame1.setLayout(new java.awt.BorderLayout(1, 1));
 
         Scroll.setName("Scroll"); // NOI18N
@@ -360,7 +377,7 @@ public final class SuratButaWarna extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-09-2021" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "23-10-2024" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -373,7 +390,7 @@ public final class SuratButaWarna extends javax.swing.JDialog {
         panelGlass9.add(DTPCari1);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-09-2021" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "23-10-2024" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -433,10 +450,11 @@ public final class SuratButaWarna extends javax.swing.JDialog {
 
         PanelInput.setName("PanelInput"); // NOI18N
         PanelInput.setOpaque(false);
-        PanelInput.setPreferredSize(new java.awt.Dimension(192, 96));
-        PanelInput.setLayout(new java.awt.BorderLayout(1, 1));
+        PanelInput.setPreferredSize(new java.awt.Dimension(192, 150));
+        PanelInput.setLayout(new java.awt.BorderLayout());
 
         FormInput.setName("FormInput"); // NOI18N
+        FormInput.setOpaque(false);
         FormInput.setPreferredSize(new java.awt.Dimension(100, 165));
         FormInput.setLayout(null);
 
@@ -479,7 +497,7 @@ public final class SuratButaWarna extends javax.swing.JDialog {
             }
         });
         FormInput.add(TPasien);
-        TPasien.setBounds(332, 10, 390, 23);
+        TPasien.setBounds(332, 10, 360, 23);
 
         TNoRM.setEditable(false);
         TNoRM.setHighlighter(null);
@@ -495,25 +513,79 @@ public final class SuratButaWarna extends javax.swing.JDialog {
         jLabel13.setText("Tgl.Periksa :");
         jLabel13.setName("jLabel13"); // NOI18N
         FormInput.add(jLabel13);
-        jLabel13.setBounds(257, 40, 65, 23);
+        jLabel13.setBounds(230, 40, 65, 23);
 
-        HasilPeriksa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tidak Buta Warna", "Buta Warna" }));
-        HasilPeriksa.setName("HasilPeriksa"); // NOI18N
-        FormInput.add(HasilPeriksa);
-        HasilPeriksa.setBounds(562, 40, 160, 23);
+        ButaWarna.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Negatif (-)", "Positif (+)" }));
+        ButaWarna.setName("ButaWarna"); // NOI18N
+        FormInput.add(ButaWarna);
+        ButaWarna.setBounds(530, 40, 160, 23);
 
-        jLabel14.setText("Hasil Pemeriksaan :");
+        jLabel14.setText("Buta Warna : ");
         jLabel14.setName("jLabel14"); // NOI18N
         FormInput.add(jLabel14);
-        jLabel14.setBounds(438, 40, 120, 23);
+        jLabel14.setBounds(410, 40, 120, 23);
 
-        TanggalPeriksa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-09-2021" }));
-        TanggalPeriksa.setDisplayFormat("dd-MM-yyyy");
-        TanggalPeriksa.setName("TanggalPeriksa"); // NOI18N
-        FormInput.add(TanggalPeriksa);
-        TanggalPeriksa.setBounds(326, 40, 90, 23);
+        TanggalSurat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "23-10-2024" }));
+        TanggalSurat.setDisplayFormat("dd-MM-yyyy");
+        TanggalSurat.setName("TanggalSurat"); // NOI18N
+        FormInput.add(TanggalSurat);
+        TanggalSurat.setBounds(300, 40, 90, 23);
 
-        PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
+        Lvod1.setText("Visus OD :");
+        Lvod1.setName("Lvod1"); // NOI18N
+        FormInput.add(Lvod1);
+        Lvod1.setBounds(20, 73, 50, 20);
+
+        Tvod1.setName("Tvod1"); // NOI18N
+        FormInput.add(Tvod1);
+        Tvod1.setBounds(75, 70, 64, 24);
+
+        Lvod2.setText("-->  S");
+        Lvod2.setName("Lvod2"); // NOI18N
+        FormInput.add(Lvod2);
+        Lvod2.setBounds(145, 73, 30, 20);
+
+        Tvod2.setName("Tvod2"); // NOI18N
+        FormInput.add(Tvod2);
+        Tvod2.setBounds(180, 70, 64, 24);
+
+        Lvod3.setText("--> ");
+        Lvod3.setName("Lvod3"); // NOI18N
+        FormInput.add(Lvod3);
+        Lvod3.setBounds(250, 73, 20, 20);
+
+        Tvod3.setName("Tvod3"); // NOI18N
+        FormInput.add(Tvod3);
+        Tvod3.setBounds(270, 70, 64, 24);
+
+        Tvos3.setName("Tvos3"); // NOI18N
+        FormInput.add(Tvos3);
+        Tvos3.setBounds(625, 70, 64, 24);
+
+        Lvos3.setText("-->");
+        Lvos3.setName("Lvos3"); // NOI18N
+        FormInput.add(Lvos3);
+        Lvos3.setBounds(600, 73, 20, 20);
+
+        Tvos2.setName("Tvos2"); // NOI18N
+        FormInput.add(Tvos2);
+        Tvos2.setBounds(535, 70, 64, 24);
+
+        Lvos2.setText("-->  S");
+        Lvos2.setName("Lvos2"); // NOI18N
+        FormInput.add(Lvos2);
+        Lvos2.setBounds(500, 73, 30, 20);
+
+        Tvos1.setName("Tvos1"); // NOI18N
+        FormInput.add(Tvos1);
+        Tvos1.setBounds(430, 70, 64, 24);
+
+        Lvos1.setText("Visus OS :");
+        Lvos1.setName("Lvos1"); // NOI18N
+        FormInput.add(Lvos1);
+        Lvos1.setBounds(360, 73, 60, 20);
+
+        PanelInput.add(FormInput, java.awt.BorderLayout.NORTH);
 
         ChkInput.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/143.png"))); // NOI18N
         ChkInput.setMnemonic('I');
@@ -545,7 +617,7 @@ public final class SuratButaWarna extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
     
     private void NoSuratKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoSuratKeyPressed
-       Valid.pindah(evt,TCari,TanggalPeriksa);
+       Valid.pindah(evt,TCari,TanggalSurat);
 }//GEN-LAST:event_NoSuratKeyPressed
 
     private void TNoRwKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TNoRwKeyPressed
@@ -562,18 +634,32 @@ public final class SuratButaWarna extends javax.swing.JDialog {
 }//GEN-LAST:event_TPasienKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(NoSurat.getText().trim().equals("")){
-            Valid.textKosong(NoSurat,"No.Surat");
-        }else if(TNoRw.getText().trim().equals("")||TPasien.getText().trim().equals("")){
-            Valid.textKosong(TNoRw,"pasien");
-        }else{
-            if(Sequel.menyimpantf("surat_buta_warna","?,?,?,?","No.Surat",4,new String[]{
-                    NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(TanggalPeriksa.getSelectedItem()+""),HasilPeriksa.getSelectedItem()+""
-            })==true){
-                tampil();
-                emptTeks();
-            }
+    if(NoSurat.getText().trim().equals("")){
+        Valid.textKosong(NoSurat,"No.Surat");
+    }else if(TNoRw.getText().trim().equals("")||TPasien.getText().trim().equals("")){
+        Valid.textKosong(TNoRw,"pasien");
+    }else{
+        // Ambil nilai dari tiga TextBox untuk Visus OD
+        String visusOD1 = Tvod1.getText(); // TextBox pertama
+        String visusOD2 = Tvod2.getText(); // TextBox kedua (S)
+        String visusOD3 = Tvod3.getText(); // TextBox ketiga
+        
+        String visusOs1 = Tvos1.getText(); // TextBox pertama
+        String visusOs2 = Tvos2.getText(); // TextBox kedua (S)
+        String visusOs3 = Tvos3.getText(); // TextBox ketiga
+        
+        // Gabungkan nilai dari tiga TextBox menjadi satu string
+        String combinedVisusOD = visusOD1 + " -> S " + visusOD2 + " -> " + visusOD3;
+        String combinedVisusOS = visusOs1 + " -> S " + visusOs2 + " -> " + visusOs3;
+        
+        // Simpan ke tabel dengan nilai gabungan visus OD
+        if(Sequel.menyimpantf("surat_buta_warna","?,?,?,?,?,?","No.Surat",6,new String[]{
+                NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(TanggalSurat.getSelectedItem()+""), combinedVisusOD, combinedVisusOS,ButaWarna.getSelectedItem()+""
+        })==true){
+            tampil();
+            emptTeks();
         }
+    }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
@@ -616,27 +702,60 @@ public final class SuratButaWarna extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
-        if(NoSurat.getText().trim().equals("")){
-            Valid.textKosong(NoSurat,"No.Surat");      
-        }else if(TNoRw.getText().trim().equals("")||TPasien.getText().trim().equals("")){
-            Valid.textKosong(TNoRw,"pasien");    
-        }else{    
-            if(tbObat.getSelectedRow()!= -1){
-                if(Sequel.mengedittf("surat_buta_warna","no_surat=?","no_surat=?,no_rawat=?,tanggalperiksa=?,hasilperiksa=?",5,new String[]{
-                        NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(TanggalPeriksa.getSelectedItem()+""),HasilPeriksa.getSelectedItem()+"",tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
-                        })==true){
-                    tbObat.setValueAt(NoSurat.getText(),tbObat.getSelectedRow(),0);
-                    tbObat.setValueAt(TNoRw.getText(),tbObat.getSelectedRow(),1);
-                    tbObat.setValueAt(TNoRM.getText(),tbObat.getSelectedRow(),2);
-                    tbObat.setValueAt(TPasien.getText(),tbObat.getSelectedRow(),3);
-                    tbObat.setValueAt(Valid.SetTgl(TanggalPeriksa.getSelectedItem()+""),tbObat.getSelectedRow(),4);
-                    tbObat.setValueAt(HasilPeriksa.getSelectedItem().toString(),tbObat.getSelectedRow(),5);
-                    emptTeks();
+    if (NoSurat.getText().trim().equals("")) {
+        Valid.textKosong(NoSurat, "No.Surat");      
+    } else if (TNoRw.getText().trim().equals("") || TPasien.getText().trim().equals("")) {
+        Valid.textKosong(TNoRw, "pasien");    
+    } else {
+        // Ambil nilai dari tiga TextBox untuk Visus OD
+        String visusOD1 = Tvod1.getText(); // TextBox pertama
+        String visusOD2 = Tvod2.getText(); // TextBox kedua (S)
+        String visusOD3 = Tvod3.getText(); // TextBox ketiga
+
+        String visusOs1 = Tvos1.getText(); // TextBox pertama
+        String visusOs2 = Tvos2.getText(); // TextBox kedua (S)
+        String visusOs3 = Tvos3.getText(); // TextBox ketiga
+
+        // Gabungkan nilai dari tiga TextBox menjadi satu string
+        String combinedVisusOD = visusOD1 + " -> S " + visusOD2 + " -> " + visusOD3;
+        String combinedVisusOS = visusOs1 + " -> S " + visusOs2 + " -> " + visusOs3;
+
+        if (tbObat.getSelectedRow() != -1) {
+            if (Sequel.mengedittf("surat_buta_warna", "no_surat=?", "no_surat=?,no_rawat=?,TanggalSurat=?,visusod=?,visusos=?,butawarna=?", 7, new String[]{
+                NoSurat.getText(),
+                TNoRw.getText(),
+                Valid.SetTgl(TanggalSurat.getSelectedItem() + ""),
+                combinedVisusOD,
+                combinedVisusOS,
+                ButaWarna.getSelectedItem() + ""
+            })) {
+                // Mengupdate nilai pada tabel tbObat
+                int selectedRow = tbObat.getSelectedRow();
+                tbObat.setValueAt(NoSurat.getText(), selectedRow, 0);
+                tbObat.setValueAt(TNoRw.getText(), selectedRow, 1);
+                tbObat.setValueAt(TNoRM.getText(), selectedRow, 2);
+                tbObat.setValueAt(TPasien.getText(), selectedRow, 3);
+                tbObat.setValueAt(Valid.SetTgl(TanggalSurat.getSelectedItem() + ""), selectedRow, 4);
+
+                // Hanya set value jika kolom tersedia
+                if (tbObat.getColumnCount() > 5) {
+                    tbObat.setValueAt(combinedVisusOD, selectedRow, 5); // Kolom ke-6
                 }
+                if (tbObat.getColumnCount() > 6) {
+                    tbObat.setValueAt(combinedVisusOS, selectedRow, 6); // Kolom ke-7
+                }
+                if (tbObat.getColumnCount() > 7) {
+                    tbObat.setValueAt(ButaWarna.getSelectedItem().toString(), selectedRow, 7); // Kolom ke-8
+                }
+
+                emptTeks(); // Mengosongkan teks
             }
         }
+    }
 }//GEN-LAST:event_BtnEditActionPerformed
 
+   
+    
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_SPACE){
             BtnEditActionPerformed(null);
@@ -669,23 +788,23 @@ public final class SuratButaWarna extends javax.swing.JDialog {
                 param.put("kontakrs",akses.getkontakrs());
                 param.put("emailrs",akses.getemailrs());   
                 param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            tgl=" surat_buta_warna.tanggalperiksa between '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+"' ";
+            tgl=" surat_buta_warna.TanggalSurat between '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+"' ";
             if(TCari.getText().trim().equals("")){
                 Valid.MyReportqry("rptDataSuratButaWarna.jasper","report","::[ Data Surat Keterangan Buta Warna/Tidak Buta Warna ]::",
                      "select surat_buta_warna.no_surat,surat_buta_warna.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"+
-                     "surat_buta_warna.tanggalperiksa,surat_buta_warna.hasilperiksa "+                  
+                     "surat_buta_warna.TanggalSurat,surat_buta_warna.butawarna "+                  
                      "from surat_buta_warna inner join reg_periksa on surat_buta_warna.no_rawat=reg_periksa.no_rawat "+
                      "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                      "where "+tgl+" order by surat_buta_warna.no_surat",param);
             }else{
                 Valid.MyReportqry("rptDataSuratButaWarna.jasper","report","::[ Data Surat Keterangan Buta Warna/Tidak Buta Warna ]::",
                      "select surat_buta_warna.no_surat,surat_buta_warna.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"+
-                     "surat_buta_warna.tanggalperiksa,surat_buta_warna.hasilperiksa "+                  
+                     "surat_buta_warna.TanggalSurat,surat_buta_warna.butawarna "+                  
                      "from surat_buta_warna inner join reg_periksa on surat_buta_warna.no_rawat=reg_periksa.no_rawat "+
                      "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                      "where "+tgl+"and (no_surat like '%"+TCari.getText().trim()+"%' or surat_buta_warna.no_rawat like '%"+TCari.getText().trim()+"%' or "+
                      "reg_periksa.no_rkm_medis like '%"+TCari.getText().trim()+"%' or pasien.nm_pasien like '%"+TCari.getText().trim()+"%' or "+
-                     "surat_buta_warna.tanggalperiksa like '%"+TCari.getText().trim()+"%') "+
+                     "surat_buta_warna.TanggalSurat like '%"+TCari.getText().trim()+"%') "+
                      "order by surat_buta_warna.no_surat",param);
             }
             
@@ -782,7 +901,7 @@ public final class SuratButaWarna extends javax.swing.JDialog {
                 param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),7).toString()+"\nID "+(finger.equals("")?tbObat.getValueAt(tbObat.getSelectedRow(),6).toString():finger)+"\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),4).toString()));  
                 param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
                 Valid.MyReportqry("rptSuratTidakButaWarna.jasper","report","::[ Surat Keterangan Buta Warna/ Tidak Buta Warna ]::",
-                              " select surat_buta_warna.no_surat,DATE_FORMAT(surat_buta_warna.tanggalperiksa,'%d-%m-%Y')as tanggalperiksa,surat_buta_warna.hasilperiksa,dokter.nm_dokter,pasien.jk," +
+                              " select surat_buta_warna.no_surat,DATE_FORMAT(surat_buta_warna.TanggalSurat,'%d-%m-%Y')as TanggalSurat,surat_buta_warna.visusod,surat_buta_warna.visusos,surat_buta_warna.butawarna,dokter.nm_dokter,pasien.jk," +
                               " pasien.nm_pasien,DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y')as tgl_lahir,pasien.tmp_lahir,pasien.pekerjaan,dokter.kd_dokter,"+
                               " concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamat" +
                               " from surat_buta_warna inner join reg_periksa inner join pasien inner join dokter inner join kelurahan inner join kecamatan inner join kabupaten" +
@@ -826,12 +945,18 @@ public final class SuratButaWarna extends javax.swing.JDialog {
     private widget.Button BtnKeluar;
     private widget.Button BtnPrint;
     private widget.Button BtnSimpan;
+    private widget.ComboBox ButaWarna;
     private widget.CekBox ChkInput;
     private widget.Tanggal DTPCari1;
     private widget.Tanggal DTPCari2;
     private widget.PanelBiasa FormInput;
-    private widget.ComboBox HasilPeriksa;
     private widget.Label LCount;
+    private widget.Label Lvod1;
+    private widget.Label Lvod2;
+    private widget.Label Lvod3;
+    private widget.Label Lvos1;
+    private widget.Label Lvos2;
+    private widget.Label Lvos3;
     private javax.swing.JMenuItem MnCetakSuratButaWarna;
     private widget.TextBox NoSurat;
     private javax.swing.JPanel PanelInput;
@@ -840,7 +965,13 @@ public final class SuratButaWarna extends javax.swing.JDialog {
     private widget.TextBox TNoRM;
     private widget.TextBox TNoRw;
     private widget.TextBox TPasien;
-    private widget.Tanggal TanggalPeriksa;
+    private widget.Tanggal TanggalSurat;
+    private widget.TextBox Tvod1;
+    private widget.TextBox Tvod2;
+    private widget.TextBox Tvod3;
+    private widget.TextBox Tvos1;
+    private widget.TextBox Tvos2;
+    private widget.TextBox Tvos3;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel13;
     private widget.Label jLabel14;
@@ -859,46 +990,58 @@ public final class SuratButaWarna extends javax.swing.JDialog {
     public void tampil() {
         Valid.tabelKosong(tabMode);
         try{
-            tgl=" surat_buta_warna.tanggalperiksa between '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+"' ";
+            tgl = " surat_buta_warna.TanggalSurat between '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+"' ";
+
             if(TCari.getText().trim().equals("")){
-                ps=koneksi.prepareStatement(
-                     "select surat_buta_warna.no_surat,surat_buta_warna.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"+
-                     "surat_buta_warna.tanggalperiksa,surat_buta_warna.hasilperiksa,reg_periksa.kd_dokter,dokter.nm_dokter "+                  
-                     "from surat_buta_warna inner join reg_periksa on surat_buta_warna.no_rawat=reg_periksa.no_rawat "+
-                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join dokter on dokter.kd_dokter=reg_periksa.kd_dokter "+
-                     "where "+tgl+"order by surat_buta_warna.no_surat");
-            }else{
-                ps=koneksi.prepareStatement(
-                    "select surat_buta_warna.no_surat,surat_buta_warna.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"+
-                     "surat_buta_warna.tanggalperiksa,surat_buta_warna.hasilperiksa,reg_periksa.kd_dokter,dokter.nm_dokter "+                  
-                     "from surat_buta_warna inner join reg_periksa on surat_buta_warna.no_rawat=reg_periksa.no_rawat "+
-                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join dokter on dokter.kd_dokter=reg_periksa.kd_dokter "+
-                     "where "+tgl+"and (no_surat like '%"+TCari.getText().trim()+"%' or surat_buta_warna.no_rawat like '%"+TCari.getText().trim()+"%' or "+
-                     "reg_periksa.no_rkm_medis like '%"+TCari.getText().trim()+"%' or  pasien.nm_pasien like '%"+TCari.getText().trim()+"%' or "+
-                     "surat_buta_warna.tanggalperiksa like '%"+TCari.getText().trim()+"%') "+                    
-                     "order by surat_buta_warna.no_surat");
+                ps = koneksi.prepareStatement(
+                    "select surat_buta_warna.no_surat, surat_buta_warna.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien, "+
+                    "surat_buta_warna.TanggalSurat, surat_buta_warna.visusod, surat_buta_warna.visusos, surat_buta_warna.butawarna, "+
+                    "reg_periksa.kd_dokter, dokter.nm_dokter "+                  
+                    "from surat_buta_warna inner join reg_periksa on surat_buta_warna.no_rawat = reg_periksa.no_rawat "+
+                    "inner join pasien on reg_periksa.no_rkm_medis = pasien.no_rkm_medis "+
+                    "inner join dokter on dokter.kd_dokter = reg_periksa.kd_dokter "+
+                    "where "+tgl+" order by surat_buta_warna.no_surat");
+            } else {
+                ps = koneksi.prepareStatement(
+                    "select surat_buta_warna.no_surat, surat_buta_warna.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien, "+
+                    "surat_buta_warna.TanggalSurat, surat_buta_warna.visusod, surat_buta_warna.visusos, surat_buta_warna.butawarna, "+
+                    "reg_periksa.kd_dokter, dokter.nm_dokter "+                  
+                    "from surat_buta_warna inner join reg_periksa on surat_buta_warna.no_rawat = reg_periksa.no_rawat "+
+                    "inner join pasien on reg_periksa.no_rkm_medis = pasien.no_rkm_medis "+
+                    "inner join dokter on dokter.kd_dokter = reg_periksa.kd_dokter "+
+                    "where "+tgl+" and (no_surat like '%"+TCari.getText().trim()+"%' or surat_buta_warna.no_rawat like '%"+TCari.getText().trim()+"%' or "+
+                    "reg_periksa.no_rkm_medis like '%"+TCari.getText().trim()+"%' or pasien.nm_pasien like '%"+TCari.getText().trim()+"%' or "+
+                    "surat_buta_warna.TanggalSurat like '%"+TCari.getText().trim()+"%') "+                    
+                    "order by surat_buta_warna.no_surat");
             }
-                
+
             try {
-                rs=ps.executeQuery();
+                rs = ps.executeQuery();
                 while(rs.next()){
                     tabMode.addRow(new String[]{
-                        rs.getString(1),rs.getString(2),rs.getString(3),
-                        rs.getString(4),rs.getString(5),rs.getString(6),
-                        rs.getString(7),rs.getString(8)                         
+                        rs.getString(1), // No. Surat
+                        rs.getString(2), // No. Rawat
+                        rs.getString(3), // No. R.M.
+                        rs.getString(4), // Nama Pasien
+                        rs.getString(5), // Tgl. Periksa
+                        rs.getString(6), // Visus OD
+                        rs.getString(7), // Visus OS
+                        rs.getString(8), // Hasil Pemeriksaan
+                        rs.getString(9), // Kode Dokter
+                        rs.getString(10) // Nama Dokter
                     });
                 }
             } catch (Exception e) {
                 System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
+            } finally {
+                if(rs != null){
                     rs.close();
                 }
-                if(ps!=null){
+                if(ps != null){
                     ps.close();
                 }
             }
-        }catch(Exception e){
+        } catch(Exception e){
             System.out.println("Notifikasi : "+e);
         }
         LCount.setText(""+tabMode.getRowCount());
@@ -909,23 +1052,63 @@ public final class SuratButaWarna extends javax.swing.JDialog {
         TNoRM.setText("");
         TPasien.setText("");
         NoSurat.setText("");
-        TanggalPeriksa.setDate(new Date());
-        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(no_surat,3),signed)),0) from surat_buta_warna where tanggalperiksa='"+Valid.SetTgl(TanggalPeriksa.getSelectedItem()+"")+"' ",
-                "SBW"+TanggalPeriksa.getSelectedItem().toString().substring(6,10)+TanggalPeriksa.getSelectedItem().toString().substring(3,5)+TanggalPeriksa.getSelectedItem().toString().substring(0,2),3,NoSurat); 
+        TanggalSurat.setDate(new Date());
+        Valid.autoNomerSurat(
+           "SELECT IFNULL(MAX(CONVERT(LEFT(surat_buta_warna.no_surat, 4), SIGNED)), 0) "
+            + "FROM surat_buta_warna WHERE surat_buta_warna.tanggalsurat='" 
+            + Valid.SetTgl(TanggalSurat.getSelectedItem() + "") + "'",
+            "SKPM", // String tertentu yang ingin kamu tambahkan, misalnya "SKBB"
+            4, // Panjang nomor urut yang kamu inginkan (misalnya, 3 untuk 001, 002, dst.)
+            NoSurat // JTextField tempat hasil akan ditampilkan
+        );
+        
         NoSurat.requestFocus();
     }
 
  
     private void getData() {
-        if(tbObat.getSelectedRow()!= -1){
-            NoSurat.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
-            TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString());
-            TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
-            TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
-            Valid.SetTgl(TanggalPeriksa,tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
-            HasilPeriksa.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());      
+    if (tbObat.getSelectedRow() != -1) {
+        // Mengambil dan menampilkan data sesuai field yang diinginkan
+        NoSurat.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().trim());
+        TNoRw.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString().trim());
+        TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 2).toString().trim());
+        TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString().trim());
+
+        // Mengatur tanggal
+        String tanggalStr = tbObat.getValueAt(tbObat.getSelectedRow(), 4).toString().trim();
+        Valid.SetTgl(TanggalSurat, tanggalStr);
+
+        // Memisahkan dan mengambil nilai Tvod
+        String tvodData = tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString().trim();
+        String[] tvodParts = tvodData.split(" -> "); // Pisahkan berdasarkan " -> "
+        if (tvodParts.length >= 3) { // Pastikan ada setidaknya 3 elemen
+            Tvod1.setText(tvodParts[0].replaceAll("[^0-9]", "").trim()); // Ambil angka pertama
+            Tvod2.setText(tvodParts[1].replaceAll("[^0-9]", "").trim()); // Ambil angka kedua
+            Tvod3.setText(tvodParts[2].replaceAll("[^0-9]", "").trim()); // Ambil angka ketiga
+        } else {
+            Tvod1.setText("");
+            Tvod2.setText("");
+            Tvod3.setText("");
         }
+
+        // Memisahkan dan mengambil nilai Tvos
+        String tvosData = tbObat.getValueAt(tbObat.getSelectedRow(), 6).toString().trim();
+        String[] tvosParts = tvosData.split(" -> "); // Pisahkan berdasarkan " -> "
+        if (tvosParts.length >= 3) { // Pastikan ada setidaknya 3 elemen
+            Tvos1.setText(tvosParts[0].replaceAll("[^0-9]", "").trim()); // Ambil angka pertama
+            Tvos2.setText(tvosParts[1].replaceAll("[^0-9]", "").trim()); // Ambil angka kedua
+            Tvos3.setText(tvosParts[2].replaceAll("[^0-9]", "").trim()); // Ambil angka ketiga
+        } else {
+            Tvos1.setText("");
+            Tvos2.setText("");
+            Tvos3.setText("");
+        }
+
+        // Mengambil hasil pemeriksaan
+        ButaWarna.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(), 7).toString().trim());
     }
+}
+
 
     private void isRawat() {
          Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='"+TNoRw.getText()+"' ",TNoRM);
@@ -949,7 +1132,7 @@ public final class SuratButaWarna extends javax.swing.JDialog {
     private void isForm(){
         if(ChkInput.isSelected()==true){
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,96));
+            PanelInput.setPreferredSize(new Dimension(WIDTH,128));
             FormInput.setVisible(true);      
             ChkInput.setVisible(true);
         }else if(ChkInput.isSelected()==false){           

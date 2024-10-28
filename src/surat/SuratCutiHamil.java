@@ -807,8 +807,8 @@ public final class SuratCutiHamil extends javax.swing.JDialog {
                 param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),10).toString()+"\nID "+(finger.equals("")?tbObat.getValueAt(tbObat.getSelectedRow(),9).toString():finger)+"\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()));  
                 param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
                 Valid.MyReportqry("rptSuratCutiHamil.jasper","report","::[ Surat Cuti Hamil ]::",
-                              "select surat_cuti_hamil.no_surat,surat_cuti_hamil.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,dokter.nm_dokter,"+
-                              "pasien.pekerjaan,reg_periksa.tgl_registrasi,surat_cuti_hamil.keterangan_hamil,surat_cuti_hamil.terhitung_mulai, "+                  
+                              "select surat_cuti_hamil.no_surat,surat_cuti_hamil.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y')as tgl_lahir,dokter.nm_dokter,pasien.jk, "+
+                              "pasien.pekerjaan,reg_periksa.tgl_registrasi,surat_cuti_hamil.keterangan_hamil,surat_cuti_hamil.terhitung_mulai, concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamat"+                  
                               "surat_cuti_hamil.perkiraan_lahir from surat_cuti_hamil inner join reg_periksa on surat_cuti_hamil.no_rawat=reg_periksa.no_rawat "+
                               "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join dokter on dokter.kd_dokter=reg_periksa.kd_dokter "+
                               "where reg_periksa.no_rawat='"+TNoRw.getText()+"' ",param);
@@ -944,8 +944,14 @@ public final class SuratCutiHamil extends javax.swing.JDialog {
         TPasien.setText("");
         NoSurat.setText("");
         MulaiCuti.setDate(new Date());
-        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(surat_cuti_hamil.no_surat,3),signed)),0) from surat_cuti_hamil inner join reg_periksa on surat_cuti_hamil.no_rawat=reg_periksa.no_rawat where reg_periksa.tgl_registrasi='"+Valid.SetTgl(MulaiCuti.getSelectedItem()+"")+"' ",
-                "SCH"+MulaiCuti.getSelectedItem().toString().substring(6,10)+MulaiCuti.getSelectedItem().toString().substring(3,5)+MulaiCuti.getSelectedItem().toString().substring(0,2),3,NoSurat); 
+        Valid.autoNomerSurat(
+            "SELECT IFNULL(MAX(CONVERT(LEFT(surat_cuti_hamil.no_surat, 4), SIGNED)), 0) "
+             + "FROM surat_cuti_hamil WHERE surat_cuti_hamil.terhitung_mulai='" 
+             + Valid.SetTgl(MulaiCuti.getSelectedItem() + "") + "'",
+             "SCH", // String tertentu yang ingin kamu tambahkan, misalnya "SKBB"
+             4, // Panjang nomor urut yang kamu inginkan (misalnya, 3 untuk 001, 002, dst.)
+             NoSurat // JTextField tempat hasil akan ditampilkan
+        );
         NoSurat.requestFocus();
     }
 

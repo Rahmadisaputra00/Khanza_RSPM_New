@@ -61,8 +61,8 @@ public final class DlgCariObat extends javax.swing.JDialog {
     private Connection koneksi=koneksiDB.condb();
     private PreparedStatement psobat,pscarikapasitas,psstok,ps2,psbatch,psrekening;
     private ResultSet rsobat,carikapasitas,rsstok,rs2,rsbatch,rsrekening;
-    private double h_belicari=0, hargacari=0, sisacari=0,x=0,y=0,embalase=Sequel.cariIsiAngka("select set_embalase.embalase_per_obat from set_embalase"),
-                   tuslah=Sequel.cariIsiAngka("select set_embalase.tuslah_per_obat from set_embalase"),kenaikan=0,stokbarang=0,ttl=0,ppnobat=0,ttlhpp,ttljual;
+    private double h_belicari=0, hargacari=0, sisacari=0,x=0,y=0,m=0,embalase=Sequel.cariIsiAngka("select set_embalase.embalase_per_obat from set_embalase"),
+                   tuslah=Sequel.cariIsiAngka("select set_embalase.tuslah_per_obat from set_embalase"),kenaikan=0,stokbarang=0,ttl=0,ppnobat=0,ttlModal=0,ttlhpp,ttljual;
     private int i=0,z=0,row=0,row2,r;
     private Jurnal jur=new Jurnal();
     private boolean[] pilih; 
@@ -156,8 +156,7 @@ public final class DlgCariObat extends javax.swing.JDialog {
             }else if(i==12){
                 column.setPreferredWidth(85);
             }else if(i==13){
-                column.setMinWidth(0);
-                column.setMaxWidth(0);
+               column.setPreferredWidth(85);
             }else if(i==14){
                 column.setPreferredWidth(85);
             }else if(i==15){
@@ -529,6 +528,8 @@ public final class DlgCariObat extends javax.swing.JDialog {
         TPasien = new widget.TextBox();
         TNoRM = new widget.TextBox();
         LblNoRawat = new widget.TextBox();
+        jLabel9 = new widget.Label();
+        LTotalModal = new widget.Label();
         TabRawat = new javax.swing.JTabbedPane();
         Scroll = new widget.ScrollPane();
         tbObat = new widget.Table();
@@ -806,7 +807,7 @@ public final class DlgCariObat extends javax.swing.JDialog {
         label12.setName("label12"); // NOI18N
         label12.setPreferredSize(new java.awt.Dimension(50, 23));
         FormInput.add(label12);
-        label12.setBounds(395, 40, 50, 23);
+        label12.setBounds(550, 40, 50, 23);
 
         Jeniskelas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Rawat Jalan", "Beli Luar", "Karyawan", "Utama/BPJS" }));
         Jeniskelas.setName("Jeniskelas"); // NOI18N
@@ -822,7 +823,7 @@ public final class DlgCariObat extends javax.swing.JDialog {
             }
         });
         FormInput.add(Jeniskelas);
-        Jeniskelas.setBounds(448, 40, 150, 23);
+        Jeniskelas.setBounds(600, 40, 150, 23);
 
         ChkNoResep.setSelected(true);
         ChkNoResep.setText("No.Resep   ");
@@ -837,7 +838,7 @@ public final class DlgCariObat extends javax.swing.JDialog {
             }
         });
         FormInput.add(ChkNoResep);
-        ChkNoResep.setBounds(608, 40, 100, 23);
+        ChkNoResep.setBounds(760, 40, 100, 23);
 
         jLabel8.setText("Tanggal :");
         jLabel8.setName("jLabel8"); // NOI18N
@@ -846,7 +847,7 @@ public final class DlgCariObat extends javax.swing.JDialog {
         jLabel8.setBounds(4, 40, 65, 23);
 
         DTPTgl.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "13-04-2023" }));
+        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-09-2024" }));
         DTPTgl.setDisplayFormat("dd-MM-yyyy");
         DTPTgl.setName("DTPTgl"); // NOI18N
         DTPTgl.setOpaque(false);
@@ -911,7 +912,7 @@ public final class DlgCariObat extends javax.swing.JDialog {
         label21.setName("label21"); // NOI18N
         label21.setPreferredSize(new java.awt.Dimension(70, 23));
         FormInput.add(label21);
-        label21.setBounds(395, 70, 50, 23);
+        label21.setBounds(550, 70, 50, 23);
 
         kdgudang.setEditable(false);
         kdgudang.setName("kdgudang"); // NOI18N
@@ -922,13 +923,13 @@ public final class DlgCariObat extends javax.swing.JDialog {
             }
         });
         FormInput.add(kdgudang);
-        kdgudang.setBounds(448, 70, 55, 23);
+        kdgudang.setBounds(600, 70, 55, 23);
 
         nmgudang.setEditable(false);
         nmgudang.setName("nmgudang"); // NOI18N
         nmgudang.setPreferredSize(new java.awt.Dimension(207, 23));
         FormInput.add(nmgudang);
-        nmgudang.setBounds(505, 70, 150, 23);
+        nmgudang.setBounds(660, 70, 150, 23);
 
         BtnGudang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
         BtnGudang.setMnemonic('2');
@@ -941,7 +942,7 @@ public final class DlgCariObat extends javax.swing.JDialog {
             }
         });
         FormInput.add(BtnGudang);
-        BtnGudang.setBounds(657, 70, 28, 23);
+        BtnGudang.setBounds(810, 70, 28, 23);
 
         jLabel10.setText("No.Rawat :");
         jLabel10.setName("jLabel10"); // NOI18N
@@ -965,7 +966,7 @@ public final class DlgCariObat extends javax.swing.JDialog {
         TPasien.setName("TPasien"); // NOI18N
         TPasien.setPreferredSize(new java.awt.Dimension(207, 23));
         FormInput.add(TPasien);
-        TPasien.setBounds(448, 10, 237, 23);
+        TPasien.setBounds(448, 10, 390, 23);
 
         TNoRM.setEditable(false);
         TNoRM.setName("TNoRM"); // NOI18N
@@ -978,6 +979,20 @@ public final class DlgCariObat extends javax.swing.JDialog {
         LblNoRawat.setPreferredSize(new java.awt.Dimension(207, 23));
         FormInput.add(LblNoRawat);
         LblNoRawat.setBounds(72, 10, 123, 23);
+
+        jLabel9.setText("Total Modal :");
+        jLabel9.setName("jLabel9"); // NOI18N
+        jLabel9.setPreferredSize(new java.awt.Dimension(45, 23));
+        FormInput.add(jLabel9);
+        jLabel9.setBounds(380, 70, 65, 23);
+
+        LTotalModal.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        LTotalModal.setText("0");
+        LTotalModal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        LTotalModal.setName("LTotalModal"); // NOI18N
+        LTotalModal.setPreferredSize(new java.awt.Dimension(80, 23));
+        FormInput.add(LTotalModal);
+        LTotalModal.setBounds(450, 70, 80, 23);
 
         internalFrame1.add(FormInput, java.awt.BorderLayout.PAGE_START);
 
@@ -1604,6 +1619,7 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                         LTotal.setText("0");
                         LPpn.setText("0");
                         LTotalTagihan.setText("0");
+                        LTotalModal.setText("0");
                     }else{
                         sukses=false;
                         JOptionPane.showMessageDialog(null,"Terjadi kesalahan saat pemrosesan data, transaksi dibatalkan.\nPeriksa kembali data sebelum melanjutkan menyimpan..!!");
@@ -2028,6 +2044,7 @@ private void JeniskelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private widget.TextBox KdPj;
     private widget.Label LPpn;
     private widget.Label LTotal;
+    private widget.Label LTotalModal;
     private widget.Label LTotalTagihan;
     private widget.TextBox LblNoRawat;
     private javax.swing.JPopupMenu Popup;
@@ -2051,6 +2068,7 @@ private void JeniskelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private widget.Label jLabel6;
     private widget.Label jLabel7;
     private widget.Label jLabel8;
+    private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
     private widget.TextBox kdgudang;
     private widget.Label label12;
@@ -2067,7 +2085,7 @@ private void JeniskelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
     private widget.Table tbObatRacikan;
     // End of variables declaration//GEN-END:variables
 
-    public void tampilobat() {        
+     public void tampilobat() {        
         z=0;
         for(i=0;i<tbObat.getRowCount();i++){
             if(Valid.SetAngka(tbObat.getValueAt(i,1).toString())>0){
@@ -4095,23 +4113,32 @@ private void JeniskelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
 
     private void hitungObat() {
         ttl=0;
+        ttlModal=0;
         y=0;
+        m=0;
         row2=tabModeobat.getRowCount();
         for(r=0;r<row2;r++){ 
             try {
                 if(Double.parseDouble(tabModeobat.getValueAt(r,1).toString())>0){
-                    try {                
+                    try {
                         y=Math.round(Double.parseDouble(tabModeobat.getValueAt(r,1).toString())*
                           Double.parseDouble(tabModeobat.getValueAt(r,6).toString())+
                           Double.parseDouble(tabModeobat.getValueAt(r,8).toString())+
-                          Double.parseDouble(tabModeobat.getValueAt(r,9).toString()));                                                
+                          Double.parseDouble(tabModeobat.getValueAt(r,9).toString()));
+                        
+                        m=Math.round(Double.parseDouble(tabModeobat.getValueAt(r,1).toString())*
+                          Double.parseDouble(tabModeobat.getValueAt(r,13).toString())+
+                          Double.parseDouble(tabModeobat.getValueAt(r,8).toString())+
+                          Double.parseDouble(tabModeobat.getValueAt(r,9).toString()));
                     } catch (Exception e) {
                         y=0;
+                        m=0;
                     }
                     ttl=ttl+y;
-                }  
+                    ttlModal=ttlModal+m;
+                }
             } catch (Exception e) {
-            }                           
+            }
         }
         row2=tabModeDetailObatRacikan.getRowCount();
         for(r=0;r<row2;r++){ 
@@ -4122,15 +4149,23 @@ private void JeniskelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
                           Double.parseDouble(tabModeDetailObatRacikan.getValueAt(r,4).toString())+
                           Double.parseDouble(tabModeDetailObatRacikan.getValueAt(r,11).toString())+
                           Double.parseDouble(tabModeDetailObatRacikan.getValueAt(r,12).toString()));
+                        
+                        m=Math.round(Double.parseDouble(tabModeDetailObatRacikan.getValueAt(r,10).toString())*
+                          Double.parseDouble(tabModeDetailObatRacikan.getValueAt(r,5).toString())+
+                          Double.parseDouble(tabModeDetailObatRacikan.getValueAt(r,11).toString())+
+                          Double.parseDouble(tabModeDetailObatRacikan.getValueAt(r,12).toString()));
                     } catch (Exception e) {
                         y=0;
+                        m=0;
                     }
                     ttl=ttl+y;
+                    ttlModal=ttlModal+m;
                 }
             } catch (Exception e) {
             }    
         }
         LTotal.setText(Valid.SetAngka(ttl));
+        LTotalModal.setText(Valid.SetAngka(ttlModal));
         ppnobat=0;
         if(tampilkan_ppnobat_ralan.equals("Yes")){
             ppnobat=Math.round(ttl*0.11);

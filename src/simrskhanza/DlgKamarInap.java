@@ -205,7 +205,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         tabMode=new DefaultTableModel(null,new Object[]{
             "No.Rawat","Nomer RM","Nama Pasien","Alamat Pasien","Penanggung Jawab","Hubungan P.J.","Jenis Bayar","Kamar","Tarif Kamar",
             "Diagnosa Awal","Diagnosa Akhir","Tgl.Masuk","Jam Masuk","Tgl.Keluar","Jam Keluar",
-            "Ttl.Biaya","Stts.Pulang","Lama","Dokter P.J.","Kamar","Status Bayar","Agama"
+            "Ttl.Biaya","Stts.Pulang","Lama","Dokter P.J.","Kamar","Status Bayar","Agama","Kelas BPJS","Kelas Rawat"
             }){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -215,7 +215,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         tbKamIn.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbKamIn.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 22; i++) {
+        for (i = 0; i < 24; i++) {
             TableColumn column = tbKamIn.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(105);
@@ -259,6 +259,11 @@ public class DlgKamarInap extends javax.swing.JDialog {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }else if(i==21){
+                column.setPreferredWidth(60);
+            }else if(i==22){
+                column.setPreferredWidth(60);
+            }
+            else if(i==23){
                 column.setPreferredWidth(60);
             }
         }
@@ -17260,7 +17265,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
                "penjab.png_jawab,concat(kamar_inap.kd_kamar,' ',bangsal.nm_bangsal) as kamar,kamar_inap.trf_kamar,kamar_inap.diagnosa_awal,kamar_inap.diagnosa_akhir," +
                "kamar_inap.tgl_masuk,kamar_inap.jam_masuk,if(kamar_inap.tgl_keluar='0000-00-00','',kamar_inap.tgl_keluar) as tgl_keluar,if(kamar_inap.jam_keluar='00:00:00','',kamar_inap.jam_keluar) as jam_keluar,"+
                "kamar_inap.ttl_biaya,kamar_inap.stts_pulang,kamar_inap.lama,dokter.nm_dokter,kamar_inap.kd_kamar,reg_periksa.kd_pj,concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur)as umur,reg_periksa.status_bayar, "+
-               "pasien.agama from kamar_inap inner join reg_periksa on kamar_inap.no_rawat=reg_periksa.no_rawat inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
+               "pasien.agama,reg_periksa.kelas_bpjs,reg_periksa.kelas_rawat from kamar_inap inner join reg_periksa on kamar_inap.no_rawat=reg_periksa.no_rawat inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                "inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "+
                "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "+
                "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
@@ -17274,7 +17279,8 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         rs.getString("kamar"),Valid.SetAngka(rs.getDouble("trf_kamar")),rs.getString("diagnosa_awal"),
                         rs.getString("diagnosa_akhir"),rs.getString("tgl_masuk"),rs.getString("jam_masuk"),rs.getString("tgl_keluar"),
                         rs.getString("jam_keluar"),Valid.SetAngka(rs.getDouble("ttl_biaya")),rs.getString("stts_pulang"),
-                        rs.getString("lama"),rs.getString("nm_dokter"),rs.getString("kd_kamar"),rs.getString("status_bayar"),rs.getString("agama")
+                        rs.getString("lama"),rs.getString("nm_dokter"),rs.getString("kd_kamar"),rs.getString("status_bayar"),rs.getString("agama"),
+                        rs.getString("kelas_bpjs"),rs.getString("kelas_rawat")
                     });
                     psanak=koneksi.prepareStatement(
                         "select pasien.no_rkm_medis,pasien.nm_pasien,ranap_gabung.no_rawat2,concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur)as umur,pasien.no_peserta, "+

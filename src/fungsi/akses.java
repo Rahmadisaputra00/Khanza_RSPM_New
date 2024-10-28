@@ -5280,7 +5280,7 @@ public final class akses {
     public static boolean getbpjs_surat_kontrol(){return akses.bpjs_surat_kontrol;}
     public static boolean getpenggunaan_bhp_ok(){return akses.penggunaan_bhp_ok;}
     public static boolean getsurat_keterangan_rawat_inap(){return akses.surat_keterangan_rawat_inap;}
-    public static boolean getsurat_keterangan_sehat(){return akses.surat_keterangan_sehat;}
+    public static boolean getsurat_keterangan_sehat(){return akses.surat_keterangan_sehat;}    
     public static boolean getpendapatan_per_carabayar(){return akses.pendapatan_per_carabayar;}
     public static boolean getakun_host_to_host_bank_jateng(){return akses.akun_host_to_host_bank_jateng;}
     public static boolean getpembayaran_bank_jateng(){return akses.pembayaran_bank_jateng;}

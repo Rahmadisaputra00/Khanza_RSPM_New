@@ -71,7 +71,7 @@ public final class DlgKunjunganLabRanap extends javax.swing.JDialog {
 
         Object[] rowRwJlDr={
             "No.","Tanggal & Jam","No.Lab","No.RM","Nama Pasien","L","P",
-            "Alamat","Kode","Diagnosa","Jenis Pemeriksaan","Dokter Perujuk/Pengirim","Asal Ruang"
+            "Alamat","Kode","Diagnosa","Jenis Pemeriksaan","Dokter Perujuk/Pengirim","Dokter DPJP","Asal Ruang"
         };
         tabMode=new DefaultTableModel(null,rowRwJlDr){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
@@ -81,7 +81,7 @@ public final class DlgKunjunganLabRanap extends javax.swing.JDialog {
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 13; i++) {
+        for (i = 0; i < 14; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(35);
@@ -108,6 +108,8 @@ public final class DlgKunjunganLabRanap extends javax.swing.JDialog {
             }else if(i==11){
                 column.setPreferredWidth(180);
             }else if(i==12){
+                column.setPreferredWidth(180);
+            }else if(i==13){
                 column.setPreferredWidth(130);
             }
         }
@@ -1110,23 +1112,42 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
             Valid.tabelKosong(tabMode);   
             ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rawat,periksa_lab.tgl_periksa,periksa_lab.jam,periksa_lab.dokter_perujuk, " +
-                    "dokter.nm_dokter,reg_periksa.no_rkm_medis,pasien.nm_pasien,kamar_inap.kd_kamar,bangsal.nm_bangsal,"+
-                    "concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab)as almt_pj,"+
-                    "pasien.jk,concat(reg_periksa.umurdaftar,reg_periksa.sttsumur) as umur " +
-                    "from periksa_lab inner join reg_periksa inner join dokter inner join pasien "+
-                    "inner join kamar_inap inner join kamar inner join bangsal inner join penjab " +
-                    "inner join kabupaten inner join kecamatan inner join kelurahan "+
-                    "on periksa_lab.dokter_perujuk=dokter.kd_dokter and periksa_lab.no_rawat=reg_periksa.no_rawat " +
-                    "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.kd_pj=penjab.kd_pj " +
-                    "and reg_periksa.no_rawat=kamar_inap.no_rawat and kamar_inap.kd_kamar=kamar.kd_kamar and "+
-                    "kamar.kd_bangsal=bangsal.kd_bangsal and pasien.kd_kab=kabupaten.kd_kab and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kel=kelurahan.kd_kel " +
-                    "where periksa_lab.status='Ranap' and periksa_lab.tgl_periksa between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and bangsal.nm_bangsal like ? or " +
-                    "periksa_lab.status='Ranap' and periksa_lab.tgl_periksa between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and dokter.nm_dokter like ? or " +
-                    "periksa_lab.status='Ranap' and periksa_lab.tgl_periksa between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and reg_periksa.no_rkm_medis like ? or " +
-                    "periksa_lab.status='Ranap' and periksa_lab.tgl_periksa between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and pasien.nm_pasien like ? or " +
-                    "periksa_lab.status='Ranap' and periksa_lab.tgl_periksa between ? and ? and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? and pasien.alamat like ? "+
-                    "group by reg_periksa.no_rawat,periksa_lab.tgl_periksa,periksa_lab.jam order by periksa_lab.tgl_periksa,reg_periksa.jam_reg");
+                   "select reg_periksa.no_rawat, periksa_lab.tgl_periksa, periksa_lab.jam, periksa_lab.dokter_perujuk, " +
+                    "dokter.nm_dokter, dpjp.nm_dokter as nm_dpjp, reg_periksa.no_rkm_medis, pasien.nm_pasien, " +
+                    "kamar_inap.kd_kamar, bangsal.nm_bangsal, " +
+                    "concat(pasien.alamat, ', ', kelurahan.nm_kel, ', ', kecamatan.nm_kec, ', ', kabupaten.nm_kab) as almt_pj, " +
+                    "pasien.jk, concat(reg_periksa.umurdaftar, reg_periksa.sttsumur) as umur " +
+                    "from periksa_lab " +
+                    "inner join reg_periksa on periksa_lab.no_rawat = reg_periksa.no_rawat " +
+                    "inner join dokter on periksa_lab.dokter_perujuk = dokter.kd_dokter " +
+                    "inner join dpjp_ranap on reg_periksa.no_rawat = dpjp_ranap.no_rawat " +
+                    "inner join dokter as dpjp on dpjp_ranap.kd_dokter = dpjp.kd_dokter " +
+                    "inner join pasien on reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
+                    "inner join kamar_inap on reg_periksa.no_rawat = kamar_inap.no_rawat " +
+                    "inner join kamar on kamar_inap.kd_kamar = kamar.kd_kamar " +
+                    "inner join bangsal on kamar.kd_bangsal = bangsal.kd_bangsal " +
+                    "inner join penjab on reg_periksa.kd_pj = penjab.kd_pj " +
+                    "inner join kabupaten on pasien.kd_kab = kabupaten.kd_kab " +
+                    "inner join kecamatan on pasien.kd_kec = kecamatan.kd_kec " +
+                    "inner join kelurahan on pasien.kd_kel = kelurahan.kd_kel " +
+                    "where periksa_lab.status = 'Ranap' and periksa_lab.tgl_periksa between ? and ? " +
+                    "and bangsal.nm_bangsal like ? and dokter.nm_dokter like ? and penjab.png_jawab like ? " +
+                    "and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? and kelurahan.nm_kel like ? " +
+                    "and bangsal.nm_bangsal like ? or " +
+                    "periksa_lab.status = 'Ranap' and periksa_lab.tgl_periksa between ? and ? and bangsal.nm_bangsal like ? " +
+                    "and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? " +
+                    "and kelurahan.nm_kel like ? and dpjp.nm_dokter like ? or " +
+                    "periksa_lab.status = 'Ranap' and periksa_lab.tgl_periksa between ? and ? and bangsal.nm_bangsal like ? " +
+                    "and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? " +
+                    "and kelurahan.nm_kel like ? and reg_periksa.no_rkm_medis like ? or " +
+                    "periksa_lab.status = 'Ranap' and periksa_lab.tgl_periksa between ? and ? and bangsal.nm_bangsal like ? " +
+                    "and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? " +
+                    "and kelurahan.nm_kel like ? and pasien.nm_pasien like ? or " +
+                    "periksa_lab.status = 'Ranap' and periksa_lab.tgl_periksa between ? and ? and bangsal.nm_bangsal like ? " +
+                    "and dokter.nm_dokter like ? and penjab.png_jawab like ? and kabupaten.nm_kab like ? and kecamatan.nm_kec like ? " +
+                    "and kelurahan.nm_kel like ? and pasien.alamat like ? " +
+                    "group by reg_periksa.no_rawat, periksa_lab.tgl_periksa, periksa_lab.jam " +
+                    "order by periksa_lab.tgl_periksa, reg_periksa.jam_reg");
             try {
                 ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
                 ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
@@ -1274,10 +1295,21 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     }
                     
                     tabMode.addRow(new Object[]{
-                        i,rs.getString("tgl_periksa")+" "+rs.getString("jam"),no_lab,rs.getString("no_rkm_medis"),
-                        rs.getString("nm_pasien"),umurlk,umurpr,rs.getString("almt_pj"),kddiangnosa,diagnosa,
-                        tindakan,rs.getString("nm_dokter"),rs.getString("kd_kamar")+" "+rs.getString("nm_bangsal")
-                    });                
+                        i,
+                        rs.getString("tgl_periksa") + " " + rs.getString("jam"),
+                        no_lab,
+                        rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        umurlk,
+                        umurpr,
+                        rs.getString("almt_pj"),
+                        kddiangnosa,
+                        diagnosa,
+                        tindakan,
+                        rs.getString("nm_dokter"),
+                        rs.getString("nm_dpjp"), // Tambahkan nama dokter DPJP di sini
+                        rs.getString("kd_kamar") + " " + rs.getString("nm_bangsal")
+                    });
                     i++;
                 }
                 if(i>1){

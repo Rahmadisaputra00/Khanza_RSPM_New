@@ -1,0 +1,4 @@
+-dlgkunjunganralan
+-dlgkunjunganranap
+-dlgreg
+-dlgigd

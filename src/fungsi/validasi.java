@@ -1455,4 +1455,63 @@ public final class validasi {
     public static int milliToDay(long milli) {
         return (int) ((double) milli / (1000 * 24 * 60 * 60));
     }
+    
+    public void autoNomerSurat(String sql, String strAwal, Integer pnj, javax.swing.JTextField teks) {
+        try {
+            ps = connect.prepareStatement(sql);
+            try {
+                rs = ps.executeQuery();
+                String s = "1";
+                while (rs.next()) {
+                    s = Integer.toString(Integer.parseInt(rs.getString(1)) + 1);
+                }
+
+                int j = s.length();
+                String s1 = "";
+                for (int i = 1; i <= pnj - j; i++) {
+                    s1 += "0";
+                }
+
+                // Bagian format nomor urut surat
+                String nomorUrut = s1 + s;  // Contoh: 001, 002, dst.
+
+                // String tertentu yang ingin ditambahkan, misalnya 'SKBB'
+                String kodeSurat = strAwal; 
+
+                // Kode RSPM
+                String kodeRSPM = "RSPM";
+
+                // Bulan dalam format Romawi
+                String bulanRomawi = getBulanRomawi(Calendar.getInstance().get(Calendar.MONTH) + 1);
+
+                // Tahun dalam format angka biasa, misalnya 2024
+                String tahunBiasa = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+
+                // Menggabungkan hasil akhir
+                teks.setText(nomorUrut + "/" + kodeSurat + "/" + kodeRSPM + "/" + bulanRomawi + "/" + tahunBiasa);
+            } catch (Exception e) {
+                System.out.println("Notifikasi : " + e);
+                JOptionPane.showMessageDialog(null, "Maaf, Query tidak bisa dijalankan...!!!!");
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+
+                if (ps != null) {
+                    ps.close();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
+        }
+    }
+
+    // Fungsi untuk mendapatkan bulan dalam format Romawi
+    public String getBulanRomawi(int bulan) {
+        String[] bulanRomawi = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"};
+        return bulanRomawi[bulan - 1]; // Mengembalikan nama bulan dalam format Romawi
+    }
+
+
+
 }
