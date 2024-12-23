@@ -306,7 +306,7 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 					<font fontName="Tahoma" size="12" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Umur]]></text>
+				<text><![CDATA[Tgl. Lahir]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="111" y="286" width="7" height="18" uuid="77e635f9-cf0f-427c-b738-ccc936944025"/>

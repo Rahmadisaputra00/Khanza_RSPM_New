@@ -71,7 +71,7 @@ public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        Object[] row={"No.Rawat","Pasien","Petugas","Tgl.Periksa","Jam Periksa","Dokter Perujuk","Penanggung Jawab"};
+        Object[] row={"No.Rawat","Pasien","Petugas","Tgl.Periksa","Jam Periksa","-","Penjamin","Dokter Perujuk","DPJP","Penanggung Jawab"};
         tabMode=new DefaultTableModel(null,row){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -80,7 +80,7 @@ public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
         tbDokter.setPreferredScrollableViewportSize(new Dimension(800,800));
         tbDokter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 7; i++) {
+        for (i = 0; i < 10; i++) {
             TableColumn column = tbDokter.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(110);
@@ -95,6 +95,12 @@ public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
             }else if(i==5){
                 column.setPreferredWidth(170);
             }else if(i==6){
+                column.setPreferredWidth(170);
+            }else if(i==7){
+                column.setPreferredWidth(170);
+            }else if(i==8){
+                column.setPreferredWidth(170);
+            }else if(i==9){
                 column.setPreferredWidth(170);
             }
         }
@@ -2183,29 +2189,44 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         try {
             Valid.tabelKosong(tabMode);   
             if(NoRawat.getText().equals("")&&kdmem.getText().equals("")&&kdptg.getText().equals("")&&TCari.getText().equals("")){
-                ps=koneksi.prepareStatement(
-                        "select periksa_radiologi.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,petugas.nama,periksa_radiologi.tgl_periksa,"+
-                        "periksa_radiologi.jam,periksa_radiologi.dokter_perujuk,periksa_radiologi.kd_dokter,penjab.png_jawab,dokter.nm_dokter "+
-                        "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "+
-                        "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                        "inner join petugas on periksa_radiologi.nip=petugas.nip "+
-                        "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                        "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter where "+
-                        "periksa_radiologi.tgl_periksa between ? and ? group by concat(periksa_radiologi.no_rawat,periksa_radiologi.tgl_periksa,periksa_radiologi.jam) "+
-                        "order by periksa_radiologi.tgl_periksa desc,periksa_radiologi.jam desc");
+               ps = koneksi.prepareStatement(
+                    "SELECT periksa_radiologi.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien, petugas.nama, " +
+                    "periksa_radiologi.tgl_periksa, periksa_radiologi.jam, periksa_radiologi.dokter_perujuk, " +
+                    "periksa_radiologi.kd_dokter, penjab.png_jawab, dokter.nm_dokter, dokter_dpjp.nm_dokter AS nm_dpjp " +
+                    "FROM periksa_radiologi " +
+                    "INNER JOIN reg_periksa ON periksa_radiologi.no_rawat = reg_periksa.no_rawat " +
+                    "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
+                    "INNER JOIN petugas ON periksa_radiologi.nip = petugas.nip " +
+                    "INNER JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj " +
+                    "INNER JOIN dokter ON periksa_radiologi.kd_dokter = dokter.kd_dokter " +
+                    "LEFT JOIN dpjp_ranap ON periksa_radiologi.no_rawat = dpjp_ranap.no_rawat " +
+                    "LEFT JOIN dokter AS dokter_dpjp ON dpjp_ranap.kd_dokter = dokter_dpjp.kd_dokter " +
+                    "WHERE periksa_radiologi.tgl_periksa BETWEEN ? AND ? " +
+                    "GROUP BY CONCAT(periksa_radiologi.no_rawat, periksa_radiologi.tgl_periksa, periksa_radiologi.jam) " +
+                    "ORDER BY periksa_radiologi.tgl_periksa DESC, periksa_radiologi.jam DESC"
+                );
             }else{
-                ps=koneksi.prepareStatement(
-                        "select periksa_radiologi.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,petugas.nama,periksa_radiologi.tgl_periksa,"+
-                        "periksa_radiologi.jam,periksa_radiologi.dokter_perujuk,periksa_radiologi.kd_dokter,penjab.png_jawab,dokter.nm_dokter "+
-                        "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "+
-                        "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                        "inner join petugas on periksa_radiologi.nip=petugas.nip "+
-                        "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                        "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter where "+
-                        "periksa_radiologi.tgl_periksa between ? and ? and periksa_radiologi.no_rawat like ? and reg_periksa.no_rkm_medis like ? "+
-                        "and petugas.nip like ? and (pasien.nm_pasien like ? or petugas.nama like ? or reg_periksa.no_rkm_medis like ? or penjab.png_jawab like ? ) "+
-                        "group by concat(periksa_radiologi.no_rawat,periksa_radiologi.tgl_periksa,periksa_radiologi.jam) "+
-                        "order by periksa_radiologi.tgl_periksa desc,periksa_radiologi.jam desc");
+                ps = koneksi.prepareStatement(
+                    "SELECT periksa_radiologi.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien, petugas.nama, " +
+                    "periksa_radiologi.tgl_periksa, periksa_radiologi.jam, periksa_radiologi.dokter_perujuk, " +
+                    "periksa_radiologi.kd_dokter, penjab.png_jawab, dokter.nm_dokter, dokter_dpjp.nm_dokter AS nm_dpjp " +
+                    "FROM periksa_radiologi " +
+                    "INNER JOIN reg_periksa ON periksa_radiologi.no_rawat = reg_periksa.no_rawat " +
+                    "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
+                    "INNER JOIN petugas ON periksa_radiologi.nip = petugas.nip " +
+                    "INNER JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj " +
+                    "INNER JOIN dokter ON periksa_radiologi.kd_dokter = dokter.kd_dokter " +
+                    "LEFT JOIN dpjp_ranap ON periksa_radiologi.no_rawat = dpjp_ranap.no_rawat " +
+                    "LEFT JOIN dokter AS dokter_dpjp ON dpjp_ranap.kd_dokter = dokter_dpjp.kd_dokter " +
+                    "WHERE periksa_radiologi.tgl_periksa BETWEEN ? AND ? " +
+                    "AND periksa_radiologi.no_rawat LIKE ? " +
+                    "AND reg_periksa.no_rkm_medis LIKE ? " +
+                    "AND petugas.nip LIKE ? " +
+                    "AND (pasien.nm_pasien LIKE ? OR petugas.nama LIKE ? OR reg_periksa.no_rkm_medis LIKE ? OR penjab.png_jawab LIKE ?) " +
+                    "GROUP BY CONCAT(periksa_radiologi.no_rawat, periksa_radiologi.tgl_periksa, periksa_radiologi.jam) " +
+                    "ORDER BY periksa_radiologi.tgl_periksa DESC, periksa_radiologi.jam DESC"
+                );
+
             }
                 
             try {
@@ -2239,9 +2260,9 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     }
                     tabMode.addRow(new Object[]{
                         rs.getString("no_rawat"),rs.getString("no_rkm_medis")+" "+rs.getString("nm_pasien")+" ("+kamar+" : "+namakamar+")",rs.getString("nama"),
-                        rs.getString("tgl_periksa"),rs.getString("jam"),dokter.tampil3(rs.getString("dokter_perujuk")),rs.getString("nm_dokter")
+                        rs.getString("tgl_periksa"),rs.getString("jam"),"-",rs.getString("png_jawab"),dokter.tampil3(rs.getString("dokter_perujuk")),rs.getString("nm_dpjp"),rs.getString("nm_dokter")
                     });
-                    tabMode.addRow(new Object[]{"","Proyeksi & Dosis Radiasi","Kode Periksa","Nama Pemeriksaan","Biaya","Cara Bayar : "+rs.getString("png_jawab"),""});
+                    tabMode.addRow(new Object[]{rs.getString("no_rawat"),rs.getString("no_rkm_medis")+" "+rs.getString("nm_pasien")+" ("+kamar+" : "+namakamar+")","Proyeksi & Dosis Radiasi","Kode Periksa","Nama Pemeriksaan","Biaya",rs.getString("png_jawab"),dokter.tampil3(rs.getString("dokter_perujuk")),rs.getString("nm_dpjp"),rs.getString("nm_dokter")});
                     ps2=koneksi.prepareStatement(
                             "select jns_perawatan_radiologi.kd_jenis_prw,jns_perawatan_radiologi.nm_perawatan,periksa_radiologi.biaya,"+"concat("+
                             "if(periksa_radiologi.proyeksi<>'',concat('Proyeksi : ',periksa_radiologi.proyeksi,', '),''),"+
@@ -2261,8 +2282,9 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                         rs2=ps2.executeQuery();
                         while(rs2.next()){  
                             ttl=ttl+rs2.getDouble("biaya");
-                            tabMode.addRow(new Object[]{"",rs2.getString("proyeksi"),rs2.getString("kd_jenis_prw"),rs2.getString("nm_perawatan"),Valid.SetAngka(rs2.getDouble("biaya")),"",""});
+                            tabMode.addRow(new Object[]{rs.getString("no_rawat"),rs.getString("no_rkm_medis")+" "+rs.getString("nm_pasien")+" ("+kamar+" : "+namakamar+")",rs2.getString("proyeksi"),rs2.getString("kd_jenis_prw"),rs2.getString("nm_perawatan"),Valid.SetAngka(rs2.getDouble("biaya")),rs.getString("png_jawab"),dokter.tampil3(rs.getString("dokter_perujuk")),rs.getString("nm_dpjp"),rs.getString("nm_dokter")});
                         }
+                        tabMode.addRow(new Object[]{"","","","","","","",""});
                     } catch (Exception e) {
                         System.out.println("simrskhanza.DlgCariPeriksaRadiologi.tampil() ps2 : "+e);
                     } finally{

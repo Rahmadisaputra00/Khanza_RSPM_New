@@ -1462,33 +1462,28 @@ public final class validasi {
             try {
                 rs = ps.executeQuery();
                 String s = "1";
-                while (rs.next()) {
-                    s = Integer.toString(Integer.parseInt(rs.getString(1)) + 1);
+                if (rs.next()) {
+                    // Mengambil nomor maksimum dari database dan menambahnya dengan 1
+                    s = Integer.toString(rs.getInt(1) + 1);
                 }
 
+                // Tambahkan nol di depan nomor urut sesuai panjang yang diinginkan
                 int j = s.length();
                 String s1 = "";
                 for (int i = 1; i <= pnj - j; i++) {
                     s1 += "0";
                 }
+                String nomorUrut = s1 + s;  // Contoh: 0001, 0002, dst.
 
-                // Bagian format nomor urut surat
-                String nomorUrut = s1 + s;  // Contoh: 001, 002, dst.
-
-                // String tertentu yang ingin ditambahkan, misalnya 'SKBB'
-                String kodeSurat = strAwal; 
-
-                // Kode RSPM
+                // Bagian kode lainnya
+                String kodeSurat = strAwal;
                 String kodeRSPM = "RSPM";
-
-                // Bulan dalam format Romawi
                 String bulanRomawi = getBulanRomawi(Calendar.getInstance().get(Calendar.MONTH) + 1);
-
-                // Tahun dalam format angka biasa, misalnya 2024
                 String tahunBiasa = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
 
-                // Menggabungkan hasil akhir
+                // Gabungkan format akhir
                 teks.setText(nomorUrut + "/" + kodeSurat + "/" + kodeRSPM + "/" + bulanRomawi + "/" + tahunBiasa);
+
             } catch (Exception e) {
                 System.out.println("Notifikasi : " + e);
                 JOptionPane.showMessageDialog(null, "Maaf, Query tidak bisa dijalankan...!!!!");
@@ -1496,7 +1491,6 @@ public final class validasi {
                 if (rs != null) {
                     rs.close();
                 }
-
                 if (ps != null) {
                     ps.close();
                 }
@@ -1505,6 +1499,7 @@ public final class validasi {
             System.out.println("Notifikasi : " + e);
         }
     }
+
 
     // Fungsi untuk mendapatkan bulan dalam format Romawi
     public String getBulanRomawi(int bulan) {

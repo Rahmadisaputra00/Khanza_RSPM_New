@@ -1192,8 +1192,13 @@ public final class SuratSakit extends javax.swing.JDialog {
         LamaSakit.setText("1 (Satu)");
         TanggalAwal.setDate(new Date());
         TanggalAkhir.setDate(new Date());
-        Valid.autoNomer3("select ifnull(MAX(CONVERT(RIGHT(suratsakit.no_surat,3),signed)),0) from suratsakit where suratsakit.tanggalawal='"+Valid.SetTgl(TanggalAwal.getSelectedItem()+"")+"' ",
-                "SKS"+TanggalAwal.getSelectedItem().toString().substring(6,10)+TanggalAwal.getSelectedItem().toString().substring(3,5)+TanggalAwal.getSelectedItem().toString().substring(0,2),3,NoSurat); 
+        Valid.autoNomerSurat(
+            "SELECT IFNULL(MAX(CONVERT(LEFT(suratsakit.no_surat, 4), SIGNED)), 0) "
+            + "FROM suratsakit",
+            "S.K.S",
+            4,
+            NoSurat
+        );
         NoSurat.requestFocus();
     }
 

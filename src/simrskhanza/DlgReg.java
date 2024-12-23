@@ -1312,6 +1312,7 @@ public final class DlgReg extends javax.swing.JDialog {
         BtnAll = new widget.Button();
         jLabel10 = new widget.Label();
         LCount = new widget.Label();
+        btnkirim = new widget.Button();        
         BtnKeluar = new widget.Button();
         panelGlass7 = new widget.panelisi();
         jLabel15 = new widget.Label();
@@ -6445,6 +6446,15 @@ public final class DlgReg extends javax.swing.JDialog {
         LCount.setName("LCount"); // NOI18N
         LCount.setPreferredSize(new java.awt.Dimension(72, 30));
         panelGlass6.add(LCount);
+        
+        btnkirim.setText("Kirim Berkas");
+        btnkirim.setName("btnkirim"); // NOI18N
+        btnkirim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnkirimActionPerformed(evt);
+            }
+        });
+        panelGlass6.add(btnkirim);
 
         BtnKeluar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/exit.png"))); // NOI18N
         BtnKeluar.setMnemonic('K');
@@ -10154,7 +10164,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
                 }
             } catch (Exception e) {
                 System.out.println("Notif : "+e);
-            } 
+            }
             
             param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
             Valid.MyReportqry("rptSBPK.jasper","report","::[ Surat Bukti Pelayanan Kesehatan ]::",
@@ -14735,6 +14745,42 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
             }
         }
     }//GEN-LAST:event_MnSkorStewardPascaAnestesiActionPerformed
+    
+    private String getCurrentTimestamp() {
+        // Mendapatkan waktu saat ini dalam format "yyyy-MM-dd HH:mm:ss"
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(new Date());
+    }
+
+    
+    private void btnkirimActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, tabel masih kosong...!!!!");
+            TNoReg.requestFocus();
+        } else if (TPasien.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Maaf, silakan pilih dulu dengan mengklik data pada tabel...!!!");
+            tbPetugas.requestFocus();
+        } else {
+            if (tbPetugas.getSelectedRow() != -1) {
+                if (Sequel.cariRegistrasi(TNoRw.getText()) > 0) {
+                    JOptionPane.showMessageDialog(rootPane, "Data billing sudah terverifikasi..!!");
+                } else {
+                    // Mendapatkan waktu sekarang
+                    String waktuDikirim = getCurrentTimestamp();
+
+                    // Query SQL yang diperbaiki
+                    String noRawat = TNoRw.getText();
+                    String query = "INSERT INTO mutasi_berkas (no_rawat, status, dikirim, diterima, kembali, tidakada, ranap) " +
+                                   "VALUES ('" + noRawat + "', 'Sudah Dikirim', '" + waktuDikirim + "', '0000-00-00 00:00:00', " +
+                                   "'0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00')";
+                    Sequel.queryu(query);
+
+                    // Pesan notifikasi
+                    JOptionPane.showMessageDialog(null, "Data berhasil dikirim ke tabel mutasi_berkas.");
+                }
+            }
+        }
+    }
 
     private void MnSkorBromagePascaAnestesiActionPerformed(java.awt.event.ActionEvent evt) {                                                           
         if(tabMode.getRowCount()==0){
@@ -15636,6 +15682,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     private widget.Button btnKel;
     private widget.Button btnPenjab;
     private widget.Button btnPenjab1;
+    private widget.Button btnkirim;
     private widget.InternalFrame internalFrame1;
     private widget.InternalFrame internalFrame4;
     private widget.InternalFrame internalFrame5;
@@ -15922,15 +15969,16 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     }
 
 
-    private void jam(){
-        ActionListener taskPerformer = new ActionListener(){
-            private int nilai_jam;
-            private int nilai_menit;
-            private int nilai_detik;
+    private void jam() {
+    ActionListener taskPerformer = new ActionListener() {
+        private int nilai_jam;
+        private int nilai_menit;
+        private int nilai_detik;
+        
             public void actionPerformed(ActionEvent e) {
-                String nol_jam = "";
-                String nol_menit = "";
-                String nol_detik = "";
+            String nol_jam = "";
+            String nol_menit = "";
+            String nol_detik = "";
                 
                 Date now = Calendar.getInstance().getTime();
 

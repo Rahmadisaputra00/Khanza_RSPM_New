@@ -59,6 +59,7 @@ where detailjual.aturan_pakai<>'']]>
 		<property name="com.jaspersoft.studio.field.tree.path" value="kodesatuan"/>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="keterangan" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -140,14 +141,6 @@ where detailjual.aturan_pakai<>'']]>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="30" y="80" width="102" height="15" uuid="cad5f77b-99f0-4c62-8927-25d037b8a513"/>
-				<textElement>
-					<font fontName="Tahoma" size="6" isBold="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
-			</textField>
 			<line>
 				<reportElement x="2" y="96" width="131" height="1" forecolor="#006666" uuid="5c5adf66-319b-48c8-9ff6-30ab4812d1a4"/>
 				<graphicElement>
@@ -200,6 +193,13 @@ where detailjual.aturan_pakai<>'']]>
 					<pen lineStyle="Solid"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement x="33" y="80" width="97" height="16" uuid="97216d87-4ed0-40b1-9a04-d018e0bf3f9c"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>

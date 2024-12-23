@@ -1503,7 +1503,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
                     Valid.MyReportqry("rptItemResepPenjualan5.jasper","report","::[ Aturan Pakai Obat ]::",
                         "select penjualan.nota_jual,penjualan.tgl_jual, "+
-                        "penjualan.no_rkm_medis,penjualan.nm_pasien,databarang.nama_brng,"+
+                        "penjualan.no_rkm_medis,penjualan.nm_pasien,penjualan.keterangan,databarang.nama_brng,"+
                         "detailjual.aturan_pakai,detailjual.jumlah,kodesatuan.satuan "+
                         "from penjualan inner join detailjual on penjualan.nota_jual=detailjual.nota_jual "+
                         "inner join databarang on detailjual.kode_brng=databarang.kode_brng "+

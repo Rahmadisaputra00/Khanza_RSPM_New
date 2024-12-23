@@ -60,8 +60,10 @@
 		<property name="com.jaspersoft.studio.field.tree.path" value="pasien"/>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="kesimpulan" class="java.lang.String"/>
+	<field name="keterangan" class="java.lang.String"/>
 	<field name="no_surat" class="java.lang.String"/>
+	<field name="diagnosa" class="java.lang.String"/>
+	<field name="kd_penyakit" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -92,7 +94,7 @@
 				<textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="443" width="551" height="39" uuid="8fdf38d1-c33e-4200-aad9-16a9cdf5f55e"/>
+				<reportElement x="2" y="452" width="551" height="39" uuid="8fdf38d1-c33e-4200-aad9-16a9cdf5f55e"/>
 				<textElement>
 					<font fontName="Tahoma" size="12" isBold="false"/>
 					<paragraph lineSpacing="1_1_2"/>
@@ -132,15 +134,15 @@
 				<textFieldExpression><![CDATA[$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="140" y="350" width="413" height="74" uuid="87be5d8a-4e85-4520-9a66-710c7858a45e"/>
+				<reportElement x="140" y="382" width="413" height="50" uuid="87be5d8a-4e85-4520-9a66-710c7858a45e"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Tahoma" size="12" isBold="true"/>
 					<paragraph lineSpacing="1_1_2"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Benar berobat jalan di " + $P{namars} + " pada tanggal " + $F{tanggalsurat} + " dan dari Hasil pemeriksaan fisik dan Hasil laboratorium pasien dinyatakan " + $F{kesimpulan}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Benar berobat jalan di " + $P{namars} + " pada tanggal " + $F{tanggalsurat} + " " + $F{keterangan}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="0" y="526" width="553" height="18" uuid="3ea2494c-796f-4676-a7dc-232639930ee4"/>
+				<reportElement x="1" y="535" width="553" height="18" uuid="3ea2494c-796f-4676-a7dc-232639930ee4"/>
 				<textElement textAlignment="Left">
 					<font fontName="Tahoma" size="12" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -148,14 +150,14 @@
 				<textFieldExpression><![CDATA["Panyabungan, "+new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date())]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="1" y="616" width="549" height="23" uuid="0a32ce45-55af-4770-a58c-aac293862e18"/>
+				<reportElement x="2" y="625" width="549" height="23" uuid="0a32ce45-55af-4770-a58c-aac293862e18"/>
 				<textElement textAlignment="Left">
 					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nm_dokter}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="506" width="86" height="16" uuid="e6f5fceb-c299-4cf5-a029-abd2250630a6"/>
+				<reportElement x="2" y="515" width="86" height="16" uuid="e6f5fceb-c299-4cf5-a029-abd2250630a6"/>
 				<textElement>
 					<font fontName="Tahoma" size="12"/>
 					<paragraph lineSpacing="Single"/>
@@ -246,7 +248,7 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				<textFieldExpression><![CDATA["No. :  " + $F{no_surat}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="31" y="351" width="110" height="39" uuid="a1eb358b-e0f3-4a4a-9878-4a6a04928099"/>
+				<reportElement x="31" y="383" width="110" height="39" uuid="a1eb358b-e0f3-4a4a-9878-4a6a04928099"/>
 				<textElement>
 					<font fontName="Tahoma" size="12" isBold="false"/>
 					<paragraph lineSpacing="1_1_2"/>
@@ -261,6 +263,22 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				</textElement>
 				<text><![CDATA[Dengan hasil pemeriksaan sebagai berikut :]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="30" y="359" width="110" height="19" uuid="7055dfe2-5115-471e-b716-517fdc98c469"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="false"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[Diagnosa]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="142" y="359" width="413" height="19" uuid="b0a1165b-f1d8-44ec-85ac-a1378fd9ceb0"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kd_penyakit} +" - "+$F{diagnosa}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>

@@ -70,7 +70,7 @@
 	<detail>
 		<band height="802" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="392" width="554" height="30" uuid="65036a84-6621-4564-aec2-749a01307898">
+				<reportElement x="0" y="384" width="554" height="30" uuid="65036a84-6621-4564-aec2-749a01307898">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -184,7 +184,7 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				<imageExpression><![CDATA["./48x48/kars.png"]]></imageExpression>
 			</image>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="1" y="472" width="553" height="18" uuid="7caed9b5-62c0-4304-ab61-30998e53d092"/>
+				<reportElement x="1" y="464" width="553" height="18" uuid="7caed9b5-62c0-4304-ab61-30998e53d092"/>
 				<textElement textAlignment="Left">
 					<font fontName="Tahoma" size="12" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -211,7 +211,7 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="121" y="370" width="434" height="16" uuid="feb679d9-ade7-41c6-8e38-1d256046c8db">
+				<reportElement x="121" y="357" width="434" height="16" uuid="feb679d9-ade7-41c6-8e38-1d256046c8db">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -239,7 +239,7 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				<textFieldExpression><![CDATA[$F{jk}.equals("L")? "Laki-Laki":"Perempuan"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="110" y="370" width="7" height="16" uuid="17431e3d-f7fe-4be3-9a13-72a322f39aa3">
+				<reportElement x="110" y="357" width="7" height="16" uuid="17431e3d-f7fe-4be3-9a13-72a322f39aa3">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
@@ -265,7 +265,7 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				<text><![CDATA[Jenis Kelamin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="452" width="86" height="16" uuid="34a666af-a640-4fc2-ab41-b6cdb77b4563"/>
+				<reportElement x="2" y="444" width="86" height="16" uuid="34a666af-a640-4fc2-ab41-b6cdb77b4563"/>
 				<textElement>
 					<font fontName="Tahoma" size="12"/>
 					<paragraph lineSpacing="Single"/>
@@ -337,7 +337,7 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				<textFieldExpression><![CDATA[$F{umur}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="2" y="562" width="549" height="23" uuid="16986a45-c423-432d-a23e-dce4b5981d84"/>
+				<reportElement x="2" y="554" width="549" height="23" uuid="16986a45-c423-432d-a23e-dce4b5981d84"/>
 				<textElement textAlignment="Left">
 					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
@@ -362,7 +362,7 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				<text><![CDATA[SURAT KETERANGAN OPNAME]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="370" width="79" height="16" uuid="dc15f814-f8e8-405d-aba8-9fec43e6458f">
+				<reportElement x="30" y="357" width="79" height="16" uuid="dc15f814-f8e8-405d-aba8-9fec43e6458f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -373,14 +373,14 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				<text><![CDATA[Diagnosa]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="326" width="553" height="38" uuid="45513e48-cdb6-47c4-b59b-4ef4abd8437d">
+				<reportElement x="0" y="326" width="553" height="24" uuid="45513e48-cdb6-47c4-b59b-4ef4abd8437d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
 					<font fontName="Tahoma" size="12"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Adalah benar dirawat/ Opname di " + $P{namars} + " Tanggal " + $P{TanggalAwal} + " Sampai dengan tanggal " + $P{TanggalAkhir}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Adalah benar dirawat / Opname di " + $P{namars} + " Tanggal " + $P{TanggalAwal} ]]></textFieldExpression>
 			</textField>
 			<line direction="BottomUp">
 				<reportElement x="2" y="81" width="553" height="1" uuid="4424abc2-913d-4c9b-bb22-79d8ae67050e"/>

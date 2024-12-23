@@ -6550,7 +6550,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
             if(LakaLantas.getSelectedIndex()>0){
                 tglkkl=Valid.SetTgl(TanggalKKL.getSelectedItem()+"");
             }
-            
+
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
             headers.add("X-Cons-ID",koneksiDB.CONSIDAPIBPJS());
@@ -6765,7 +6765,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                             jammulai=rs.getString("jam_mulai");
                             jamselesai=rs.getString("jam_selesai");
                             kuota=rs.getInt("kuota");
-                            datajam=Sequel.cariIsi("select DATE_ADD(concat('"+Valid.SetTgl(TanggalSEP.getSelectedItem()+"")+"',' ','"+jammulai+"'),INTERVAL "+(Integer.parseInt(nomorreg)*10)+" MINUTE) ");
+                            datajam=Sequel.cariIsi("select DATE_ADD(concat('"+Valid.SetTgl(TanggalSEP.getSelectedItem()+"")+"',' ','"+jammulai+"'),INTERVAL "+(Integer.parseInt(nomorreg)*4)+" MINUTE) ");
                             parsedDate = dateFormat.parse(datajam);
                         }else{
                             statusantrean=false;

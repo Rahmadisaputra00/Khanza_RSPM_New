@@ -1054,13 +1054,12 @@ public final class SuratButaWarna extends javax.swing.JDialog {
         NoSurat.setText("");
         TanggalSurat.setDate(new Date());
         Valid.autoNomerSurat(
-           "SELECT IFNULL(MAX(CONVERT(LEFT(surat_buta_warna.no_surat, 4), SIGNED)), 0) "
-            + "FROM surat_buta_warna WHERE surat_buta_warna.tanggalsurat='" 
-            + Valid.SetTgl(TanggalSurat.getSelectedItem() + "") + "'",
-            "SKPM", // String tertentu yang ingin kamu tambahkan, misalnya "SKBB"
+            "SELECT IFNULL(MAX(CONVERT(LEFT(surat_buta_warna.no_surat, 4), SIGNED)), 0) "
+            + "FROM surat_buta_warna",
+            "KSTBW", // String tertentu yang ingin kamu tambahkan, misalnya "SKBB"
             4, // Panjang nomor urut yang kamu inginkan (misalnya, 3 untuk 001, 002, dst.)
             NoSurat // JTextField tempat hasil akan ditampilkan
-        );
+    );
         
         NoSurat.requestFocus();
     }

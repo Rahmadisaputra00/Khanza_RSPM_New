@@ -1118,13 +1118,12 @@ NoSurat.getText(),TNoRw.getText(),TNoRM.getText(),TPasien.getText(),Valid.SetTgl
         TanggalSurat.setDate(new Date());
         CmbKesimpulan.setSelectedItem("Sehat");
         Valid.autoNomerSurat(
-           "SELECT IFNULL(MAX(CONVERT(LEFT(surat_keterangan_sehat.no_surat, 4), SIGNED)), 0) "
-            + "FROM surat_keterangan_sehat WHERE surat_keterangan_sehat.tanggalsurat='" 
-            + Valid.SetTgl(TanggalSurat.getSelectedItem() + "") + "'",
-            "SKBB", // String tertentu yang ingin kamu tambahkan, misalnya "SKBB"
-            4, // Panjang nomor urut yang kamu inginkan (misalnya, 3 untuk 001, 002, dst.)
-            NoSurat // JTextField tempat hasil akan ditampilkan
-        );
+            "SELECT IFNULL(MAX(CONVERT(LEFT(surat_keterangan_sehat.no_surat, 4), SIGNED)), 0) "
+             + "FROM surat_keterangan_sehat",
+             "SKBB", // String tertentu yang ingin kamu tambahkan, misalnya "SKBB"
+             4, // Panjang nomor urut yang kamu inginkan (misalnya, 3 untuk 001, 002, dst.)
+             NoSurat // JTextField tempat hasil akan ditampilkan
+     );
 
         NoSurat.requestFocus();
     }

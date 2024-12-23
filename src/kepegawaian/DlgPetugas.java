@@ -63,7 +63,7 @@ public final class DlgPetugas extends javax.swing.JDialog {
         this.setLocation(8,1);
         setSize(885,674);
 
-        Object[] row={"NIP","Nama Petugas","J.K.","Tmp.Lahir","Tgl.Lahir","G.D.","Agama","Stts.Nikah","Alamat","Jabatan","No.Telp"};
+        Object[] row={"NIP","Nama Petugas","J.K.","Tmp.Lahir","Tgl.Lahir","G.D.","Agama","Stts.Nikah","Alamat","Jabatan","No.Telp","Unit"};
         tabMode=new DefaultTableModel(null,row){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -74,7 +74,7 @@ public final class DlgPetugas extends javax.swing.JDialog {
         tbPetugas.setPreferredScrollableViewportSize(new Dimension(800,800));
         tbPetugas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 12; i++) {
             TableColumn column = tbPetugas.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(100);
@@ -98,6 +98,8 @@ public final class DlgPetugas extends javax.swing.JDialog {
                 column.setPreferredWidth(200);
             }else if(i==10){
                 column.setPreferredWidth(100);
+            }else if(i==11){
+                column.setPreferredWidth(150);
             }
         }
         tbPetugas.setDefaultRenderer(Object.class, new WarnaTable());
@@ -264,6 +266,8 @@ public final class DlgPetugas extends javax.swing.JDialog {
         KdJbtn = new widget.TextBox();
         btnJabatan = new widget.Button();
         BtnCariPegawai = new widget.Button();
+        label1 = new widget.Label();
+        unit = new widget.TextBox();
         ChkInput = new widget.CekBox();
 
         Popup.setName("Popup"); // NOI18N
@@ -681,7 +685,7 @@ public final class DlgPetugas extends javax.swing.JDialog {
         jLabel13.setBounds(0, 102, 95, 23);
 
         DTPLahir.setForeground(new java.awt.Color(50, 70, 50));
-        DTPLahir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20-11-2022" }));
+        DTPLahir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-10-2024" }));
         DTPLahir.setDisplayFormat("dd-MM-yyyy");
         DTPLahir.setName("DTPLahir"); // NOI18N
         DTPLahir.setOpaque(false);
@@ -809,6 +813,15 @@ public final class DlgPetugas extends javax.swing.JDialog {
         FormInput.add(BtnCariPegawai);
         BtnCariPegawai.setBounds(302, 12, 28, 23);
 
+        label1.setText("Unit :");
+        label1.setName("label1"); // NOI18N
+        FormInput.add(label1);
+        label1.setBounds(670, 76, 40, 14);
+
+        unit.setName("unit"); // NOI18N
+        FormInput.add(unit);
+        unit.setBounds(720, 70, 155, 24);
+
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
         ChkInput.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/143.png"))); // NOI18N
@@ -914,6 +927,10 @@ public final class DlgPetugas extends javax.swing.JDialog {
                     TTmp.getText(),Valid.SetTgl(DTPLahir.getSelectedItem()+""),CMbGd.getSelectedItem().toString(),
                     cmbAgama.getSelectedItem().toString(),CmbStts.getSelectedItem().toString(),
                     TAlmt.getText(),KdJbtn.getText(),TTlp.getText(),"1"
+                });
+                Sequel.menyimpan("unit","?,?","NIP",2,new String[]{
+                    TNip.getText(),
+                    unit.getText()
                 });
                 Sequel.Commit();
                 Sequel.AutoComitTrue();
@@ -1057,6 +1074,10 @@ public final class DlgPetugas extends javax.swing.JDialog {
                         "',alamat='"+TAlmt.getText()+
                         "',kd_jbtn='"+KdJbtn.getText()+
                         "',no_telp='"+TTlp.getText()+"'");
+                
+                Sequel.mengedit("unit", 
+                            "nip='"+TNip.getText()+"'",
+                            "nm_unit='"+unit.getText()+"'");
                 koneksi.setAutoCommit(true);
                 if(tabMode.getRowCount()!=0){tampil();}
                 emptTeks();
@@ -1291,18 +1312,23 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator5;
+    private widget.Label label1;
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
     private widget.Table tbPetugas;
+    private widget.TextBox unit;
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try{
             ps=koneksi.prepareStatement(
-                    "select petugas.nip,petugas.nama,petugas.jk,petugas.tmp_lahir,petugas.tgl_lahir, "+
-                    "petugas.gol_darah,petugas.agama,petugas.stts_nikah,petugas.alamat,jabatan.nm_jbtn,petugas.no_telp "+
-                    "from petugas inner join jabatan on jabatan.kd_jbtn=petugas.kd_jbtn "+
+                    "SELECT petugas.nip, petugas.nama, petugas.jk, petugas.tmp_lahir, petugas.tgl_lahir, " +
+                       "petugas.gol_darah, petugas.agama, petugas.stts_nikah, petugas.alamat, jabatan.nm_jbtn, " +
+                       "petugas.no_telp, unit.nm_unit " +
+                       "FROM petugas " +
+                       "INNER JOIN jabatan ON jabatan.kd_jbtn = petugas.kd_jbtn " +
+                       "LEFT JOIN unit ON unit.nip = petugas.nip " + // Left join untuk unit
                     "where petugas.status='1' and petugas.jk like ? and petugas.gol_darah like ? and petugas.stts_nikah like ? and "+
                     "(petugas.nip like ? or petugas.nama like ? or petugas.tmp_lahir like ? or petugas.tgl_lahir like ? or "+
                     "petugas.gol_darah like ? or petugas.agama like ? or petugas.alamat like ? or jabatan.nm_jbtn like ?) order by petugas.nip");
@@ -1322,7 +1348,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 while(rs.next()){
                     tabMode.addRow(new Object[]{
                         rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),
-                        rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11)
+                        rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(12)
                     });
                 }
             } catch (Exception e) {
@@ -1354,6 +1380,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         TTlp.setText("");
         KdJbtn.setText("");
         TJbtn.setText("");
+        unit.setText("");
         DTPLahir.setDate(new Date());
         TNip.requestFocus();
     }
@@ -1382,6 +1409,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             Sequel.cariIsi("select jabatan.kd_jbtn from jabatan where jabatan.nm_jbtn='"+tbPetugas.getValueAt(row,9).toString()+"'", KdJbtn);
             TJbtn.setText(tbPetugas.getValueAt(row,9).toString());
             TTlp.setText(tbPetugas.getValueAt(row,10).toString());
+            unit.setText(tbPetugas.getValueAt(row,11).toString());
             Valid.SetTgl(DTPLahir,tbPetugas.getValueAt(row,4).toString());
         }
     }

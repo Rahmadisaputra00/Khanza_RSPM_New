@@ -321,7 +321,7 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         tabModeDrPr=new DefaultTableModel(null,new Object[]{
             "P","No.Rawat","No.R.M.","Nama Pasien","Perawatan/Tindakan","Kode Dokter",
             "Dokter Yg Menangani","NIP","Petugas Yg Menangani","Tgl.Rawat","Jam Rawat",
-            "Biaya","Kode","Tarif Dokter","Tarif Petugas","KSO","Jasa Sarana","BHP","Menejemen"}){
+            "Biaya","Dokter PJ","Kode","Tarif Dokter","Tarif Petugas","KSO","Jasa Sarana","BHP","Menejemen"}){
              @Override public boolean isCellEditable(int rowIndex, int colIndex){
                 boolean a = false;
                 if (colIndex==0) {
@@ -335,7 +335,7 @@ public final class DlgRawatInap extends javax.swing.JDialog {
                  java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class, 
                  java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
                  java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, 
-                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
              };
              @Override
              public Class getColumnClass(int columnIndex) {
@@ -346,7 +346,7 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         tbRawatDrPr.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbRawatDrPr.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 19; i++) {
+        for (i = 0; i < 20; i++) {
             TableColumn column = tbRawatDrPr.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(20);
@@ -365,16 +365,15 @@ public final class DlgRawatInap extends javax.swing.JDialog {
             }else if(i==7){
                 column.setPreferredWidth(90);
             }else if(i==8){
-                column.setPreferredWidth(180);
-            }else if(i==9){
-                column.setPreferredWidth(80);
-            }else if(i==10){
-                column.setPreferredWidth(75);
-            }else if(i==11){
                 column.setPreferredWidth(90);
+            }else if(i==9){
+                column.setPreferredWidth(180);
+            }else if(i==10){
+                column.setPreferredWidth(80);
+            }else if(i==11){
+                column.setPreferredWidth(75);
             }else if(i==12){
-                column.setMinWidth(0);
-                column.setMaxWidth(0);
+                column.setPreferredWidth(90);
             }else if(i==13){
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
@@ -391,6 +390,9 @@ public final class DlgRawatInap extends javax.swing.JDialog {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }else if(i==18){
+                column.setMinWidth(0);
+                column.setMaxWidth(0);
+            }else if(i==19){
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }
@@ -5015,13 +5017,13 @@ public final class DlgRawatInap extends javax.swing.JDialog {
                                             "' and nip='"+tbRawatDrPr.getValueAt(i,7).toString()+
                                             "' and tgl_perawatan='"+tbRawatDrPr.getValueAt(i,9).toString()+
                                             "' and jam_rawat='"+tbRawatDrPr.getValueAt(i,10).toString()+"' ")==true){
-                                        ttljmdokter=ttljmdokter+Double.parseDouble(tbRawatDrPr.getValueAt(i,13).toString());
-                                        ttljmperawat=ttljmperawat+Double.parseDouble(tbRawatDrPr.getValueAt(i,14).toString());
-                                        ttlkso=ttlkso+Double.parseDouble(tbRawatDrPr.getValueAt(i,15).toString());
+                                        ttljmdokter=ttljmdokter+Double.parseDouble(tbRawatDrPr.getValueAt(i,14).toString());
+                                        ttljmperawat=ttljmperawat+Double.parseDouble(tbRawatDrPr.getValueAt(i,15).toString());
+                                        ttlkso=ttlkso+Double.parseDouble(tbRawatDrPr.getValueAt(i,16).toString());
                                         ttlpendapatan=ttlpendapatan+Double.parseDouble(tbRawatDrPr.getValueAt(i,11).toString());
-                                        ttljasasarana=ttljasasarana+Double.parseDouble(tbRawatDrPr.getValueAt(i,16).toString());
-                                        ttlbhp=ttlbhp+Double.parseDouble(tbRawatDrPr.getValueAt(i,17).toString());
-                                        ttlmenejemen=ttlmenejemen+Double.parseDouble(tbRawatDrPr.getValueAt(i,18).toString());
+                                        ttljasasarana=ttljasasarana+Double.parseDouble(tbRawatDrPr.getValueAt(i,17).toString());
+                                        ttlbhp=ttlbhp+Double.parseDouble(tbRawatDrPr.getValueAt(i,18).toString());
+                                        ttlmenejemen=ttlmenejemen+Double.parseDouble(tbRawatDrPr.getValueAt(i,19).toString());
                                     }else{
                                         sukses=false;
                                     }
@@ -5039,13 +5041,13 @@ public final class DlgRawatInap extends javax.swing.JDialog {
                                                 "' and nip='"+tbRawatDrPr.getValueAt(i,7).toString()+
                                                 "' and tgl_perawatan='"+tbRawatDrPr.getValueAt(i,9).toString()+
                                                 "' and jam_rawat='"+tbRawatDrPr.getValueAt(i,10).toString()+"' ")==true){
-                                            ttljmdokter=ttljmdokter+Double.parseDouble(tbRawatDrPr.getValueAt(i,13).toString());
-                                            ttljmperawat=ttljmperawat+Double.parseDouble(tbRawatDrPr.getValueAt(i,14).toString());
-                                            ttlkso=ttlkso+Double.parseDouble(tbRawatDrPr.getValueAt(i,15).toString());
+                                            ttljmdokter=ttljmdokter+Double.parseDouble(tbRawatDrPr.getValueAt(i,14).toString());
+                                            ttljmperawat=ttljmperawat+Double.parseDouble(tbRawatDrPr.getValueAt(i,15).toString());
+                                            ttlkso=ttlkso+Double.parseDouble(tbRawatDrPr.getValueAt(i,16).toString());
                                             ttlpendapatan=ttlpendapatan+Double.parseDouble(tbRawatDrPr.getValueAt(i,11).toString());
-                                            ttljasasarana=ttljasasarana+Double.parseDouble(tbRawatDrPr.getValueAt(i,16).toString());
-                                            ttlbhp=ttlbhp+Double.parseDouble(tbRawatDrPr.getValueAt(i,17).toString());
-                                            ttlmenejemen=ttlmenejemen+Double.parseDouble(tbRawatDrPr.getValueAt(i,18).toString());
+                                            ttljasasarana=ttljasasarana+Double.parseDouble(tbRawatDrPr.getValueAt(i,17).toString());
+                                            ttlbhp=ttlbhp+Double.parseDouble(tbRawatDrPr.getValueAt(i,18).toString());
+                                            ttlmenejemen=ttlmenejemen+Double.parseDouble(tbRawatDrPr.getValueAt(i,19).toString());
                                         }else{
                                             sukses=false;
                                         }
@@ -8832,35 +8834,42 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
     }
     
-    public void tampilDrPr() {
+     public void tampilDrPr() {
         Valid.tabelKosong(tabModeDrPr);
         try{
             if(TCari.getText().equals("")&&TCariPasien.getText().equals("")){
-                ps3=koneksi.prepareStatement("select rawat_inap_drpr.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"+
-                   "concat(rawat_inap_drpr.kd_jenis_prw,' ',jns_perawatan_inap.nm_perawatan),rawat_inap_drpr.kd_dokter,dokter.nm_dokter,"+
-                   "rawat_inap_drpr.nip,petugas.nama,rawat_inap_drpr.tgl_perawatan,rawat_inap_drpr.jam_rawat,rawat_inap_drpr.biaya_rawat,rawat_inap_drpr.kd_jenis_prw, " +
-                   "rawat_inap_drpr.tarif_tindakandr,rawat_inap_drpr.tarif_tindakanpr,rawat_inap_drpr.kso,rawat_inap_drpr.material,rawat_inap_drpr.bhp,rawat_inap_drpr.menejemen "+
-                   "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                   "inner join rawat_inap_drpr on rawat_inap_drpr.no_rawat=reg_periksa.no_rawat "+
-                   "inner join jns_perawatan_inap on rawat_inap_drpr.kd_jenis_prw=jns_perawatan_inap.kd_jenis_prw "+
-                   "inner join dokter on rawat_inap_drpr.kd_dokter=dokter.kd_dokter "+
-                   "inner join petugas on rawat_inap_drpr.nip=petugas.nip "+
-                   "where rawat_inap_drpr.tgl_perawatan between ? and ? order by rawat_inap_drpr.no_rawat,rawat_inap_drpr.tgl_perawatan,rawat_inap_drpr.jam_rawat desc");
-            }else{
-                ps3=koneksi.prepareStatement("select rawat_inap_drpr.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,"+
-                   "concat(rawat_inap_drpr.kd_jenis_prw,' ',jns_perawatan_inap.nm_perawatan),rawat_inap_drpr.kd_dokter,dokter.nm_dokter,"+
-                   "rawat_inap_drpr.nip,petugas.nama,rawat_inap_drpr.tgl_perawatan,rawat_inap_drpr.jam_rawat,rawat_inap_drpr.biaya_rawat,rawat_inap_drpr.kd_jenis_prw, " +
-                   "rawat_inap_drpr.tarif_tindakandr,rawat_inap_drpr.tarif_tindakanpr,rawat_inap_drpr.kso,rawat_inap_drpr.material,rawat_inap_drpr.bhp,rawat_inap_drpr.menejemen "+
-                   "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                   "inner join rawat_inap_drpr on rawat_inap_drpr.no_rawat=reg_periksa.no_rawat "+
-                   "inner join jns_perawatan_inap on rawat_inap_drpr.kd_jenis_prw=jns_perawatan_inap.kd_jenis_prw "+
-                   "inner join dokter on rawat_inap_drpr.kd_dokter=dokter.kd_dokter "+
-                   "inner join petugas on rawat_inap_drpr.nip=petugas.nip "+
-                   "where rawat_inap_drpr.tgl_perawatan between ? and ? and reg_periksa.no_rkm_medis like ? and "+
-                   "(rawat_inap_drpr.no_rawat like ? or reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ? or "+
-                   "jns_perawatan_inap.nm_perawatan like ? or rawat_inap_drpr.kd_dokter like ? or dokter.nm_dokter like ? or "+
-                   "rawat_inap_drpr.nip like ? or petugas.nama like ?) "+
-                   " order by rawat_inap_drpr.no_rawat,rawat_inap_drpr.tgl_perawatan,rawat_inap_drpr.jam_rawat desc");
+                ps3 = koneksi.prepareStatement("select rawat_inap_drpr.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien, " +
+                    "concat(rawat_inap_drpr.kd_jenis_prw, ' ', jns_perawatan_inap.nm_perawatan), rawat_inap_drpr.kd_dokter, dokter.nm_dokter, " +
+                    "rawat_inap_drpr.nip, petugas.nama, rawat_inap_drpr.tgl_perawatan, rawat_inap_drpr.jam_rawat, rawat_inap_drpr.biaya_rawat, " +
+                    "dpjp.nm_dokter as nm_dpjp, rawat_inap_drpr.kd_jenis_prw, rawat_inap_drpr.tarif_tindakandr, rawat_inap_drpr.tarif_tindakanpr, " +
+                    "rawat_inap_drpr.kso, rawat_inap_drpr.material, rawat_inap_drpr.bhp, rawat_inap_drpr.menejemen " +
+                    "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
+                    "inner join rawat_inap_drpr on rawat_inap_drpr.no_rawat = reg_periksa.no_rawat " +
+                    "inner join jns_perawatan_inap on rawat_inap_drpr.kd_jenis_prw = jns_perawatan_inap.kd_jenis_prw " +
+                    "inner join dokter on rawat_inap_drpr.kd_dokter = dokter.kd_dokter " +
+                    "inner join petugas on rawat_inap_drpr.nip = petugas.nip " +
+                    "inner join dpjp_ranap on reg_periksa.no_rawat = dpjp_ranap.no_rawat " +
+                    "inner join dokter as dpjp on dpjp_ranap.kd_dokter = dpjp.kd_dokter " +
+                    "where rawat_inap_drpr.tgl_perawatan between ? and ? " +
+                    "order by rawat_inap_drpr.no_rawat, rawat_inap_drpr.tgl_perawatan, rawat_inap_drpr.jam_rawat desc");
+            } else {
+                ps3 = koneksi.prepareStatement("select rawat_inap_drpr.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien, " +
+                    "concat(rawat_inap_drpr.kd_jenis_prw, ' ', jns_perawatan_inap.nm_perawatan), rawat_inap_drpr.kd_dokter, dokter.nm_dokter, " +
+                    "rawat_inap_drpr.nip, petugas.nama, rawat_inap_drpr.tgl_perawatan, rawat_inap_drpr.jam_rawat, rawat_inap_drpr.biaya_rawat, " +
+                    "dpjp.nm_dokter as nm_dpjp, rawat_inap_drpr.kd_jenis_prw, rawat_inap_drpr.tarif_tindakandr, rawat_inap_drpr.tarif_tindakanpr, " +
+                    "rawat_inap_drpr.kso, rawat_inap_drpr.material, rawat_inap_drpr.bhp, rawat_inap_drpr.menejemen " +
+                    "from pasien inner join reg_periksa on reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
+                    "inner join rawat_inap_drpr on rawat_inap_drpr.no_rawat = reg_periksa.no_rawat " +
+                    "inner join jns_perawatan_inap on rawat_inap_drpr.kd_jenis_prw = jns_perawatan_inap.kd_jenis_prw " +
+                    "inner join dokter on rawat_inap_drpr.kd_dokter = dokter.kd_dokter " +
+                    "inner join petugas on rawat_inap_drpr.nip = petugas.nip " +
+                    "inner join dpjp_ranap on reg_periksa.no_rawat = dpjp_ranap.no_rawat " +
+                    "inner join dokter as dpjp on dpjp_ranap.kd_dokter = dpjp.kd_dokter " +
+                    "where rawat_inap_drpr.tgl_perawatan between ? and ? and reg_periksa.no_rkm_medis like ? and " +
+                    "(rawat_inap_drpr.no_rawat like ? or reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ? or " +
+                    "jns_perawatan_inap.nm_perawatan like ? or rawat_inap_drpr.kd_dokter like ? or dokter.nm_dokter like ? or " +
+                    "rawat_inap_drpr.nip like ? or petugas.nama like ?) " +
+                    "order by rawat_inap_drpr.no_rawat, rawat_inap_drpr.tgl_perawatan, rawat_inap_drpr.jam_rawat desc");
             }
                 
             try{
@@ -8884,10 +8893,10 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 rs=ps3.executeQuery();
                 while(rs.next()){
                     tabModeDrPr.addRow(new Object[]{
-                        false,rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),
-                        rs.getString(8),rs.getString(9),rs.getString(10),rs.getDouble(11),rs.getString("kd_jenis_prw"),
-                        rs.getString("tarif_tindakandr"),rs.getString("tarif_tindakanpr"),rs.getString("kso"),
-                        rs.getString("material"),rs.getString("bhp"),rs.getString("menejemen")
+                        false, rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),
+                        rs.getString(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString("nm_dpjp"), // Menambahkan nm_dpjp
+                        rs.getString("kd_jenis_prw"), rs.getString("tarif_tindakandr"), rs.getString("tarif_tindakanpr"), rs.getString("kso"),
+                        rs.getString("material"), rs.getString("bhp"), rs.getString("menejemen")
                     });
                 }
             } catch (Exception e) {
