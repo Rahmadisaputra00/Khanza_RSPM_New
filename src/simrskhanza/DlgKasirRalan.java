@@ -268,7 +268,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
             "Kode Dokter","Dokter Dituju","No.RM","Pasien",
             "Poliklinik","Penanggung Jawab","Alamat P.J.","Hubungan P.J.",
             "Biaya Reg","Jenis Bayar","Status","No.Rawat","Tanggal",
-            "Jam","No.Reg","Status Bayar","Stts Poli","Kd PJ","Kd Poli","No.Telp Pasien","Kelas BPJS","Kelas Rawat","Task ID"}){
+            "Jam","No.Reg","Status Bayar","Stts Poli","Kd PJ","Kd Poli","No.Telp Pasien","Kelas BPJS","Kelas Rawat","Task ID","SEP"}){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
         tbKasirRalan.setModel(tabModekasir);
@@ -276,7 +276,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         tbKasirRalan.setPreferredScrollableViewportSize(new Dimension(800,800));
         tbKasirRalan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 23; i++) {
+        for (i = 0; i < 24; i++) {
             TableColumn column = tbKasirRalan.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(70);
@@ -326,6 +326,8 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
                 column.setPreferredWidth(70);
             }else if(i==22){
                 column.setPreferredWidth(70);
+            }else if(i==23){
+                column.setPreferredWidth(70);
             }
         }
         try {
@@ -341,7 +343,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         tabModekasir2=new DefaultTableModel(null,new String[]{
             "Kd.Dokter","Dokter Rujukan","Nomer RM","Pasien",
             "Poliklinik Rujukan","Penanggung Jawab","Alamat P.J.","Hubungan P.J.",
-            "Jenis Bayar","Status","No.Rawat","Tanggal","Jam","Kode Poli","Kode PJ","No.Telp Pasien","Kelas BPJS","Kelas Rawat","Task ID"}){
+            "Jenis Bayar","Status","No.Rawat","Tanggal","Jam","Kode Poli","Kode PJ","No.Telp Pasien","Kelas BPJS","Kelas Rawat","Task ID","SEP"}){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
         tbKasirRalan2.setModel(tabModekasir2);
@@ -349,7 +351,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         tbKasirRalan2.setPreferredScrollableViewportSize(new Dimension(800,800));
         tbKasirRalan2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 19; i++) {
+        for (i = 0; i < 20; i++) {
             TableColumn column = tbKasirRalan2.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(70);
@@ -390,6 +392,8 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
             }else if(i==17){
                 column.setPreferredWidth(70);
             }else if(i==18){
+                column.setPreferredWidth(70);
+            }else if(i==19){
                 column.setPreferredWidth(70);
             }
         }
@@ -15036,88 +15040,90 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenu MnHasilUSG,MnHasilEndoskopi,MnRMSkrining;
         
     private void tampilkasir() {     
-    Valid.tabelKosong(tabModekasir);
-    try {   
-        semua = caripenjab.equals("") && CrPoli.getText().trim().equals("") && CrPtg.getText().trim().equals("") && 
-                cmbStatus.getSelectedItem().toString().equals("Semua") && cmbStatusBayar.getSelectedItem().toString().equals("Semua") &&
-                TCari.getText().trim().equals("");
+        Valid.tabelKosong(tabModekasir);
+        try {   
+            semua = caripenjab.equals("") && CrPoli.getText().trim().equals("") && CrPtg.getText().trim().equals("") && 
+                    cmbStatus.getSelectedItem().toString().equals("Semua") && cmbStatusBayar.getSelectedItem().toString().equals("Semua") &&
+                    TCari.getText().trim().equals("");
 
-        pskasir = koneksi.prepareStatement("SELECT reg_periksa.no_reg, reg_periksa.no_rawat, reg_periksa.tgl_registrasi, reg_periksa.jam_reg, " +
+            pskasir = koneksi.prepareStatement("SELECT reg_periksa.no_reg, reg_periksa.no_rawat, reg_periksa.tgl_registrasi, reg_periksa.jam_reg, " +
                 "reg_periksa.kd_dokter, dokter.nm_dokter, reg_periksa.no_rkm_medis, pasien.nm_pasien, poliklinik.nm_poli, " +
                 "reg_periksa.p_jawab, reg_periksa.almt_pj, reg_periksa.hubunganpj, reg_periksa.biaya_reg, reg_periksa.stts, penjab.png_jawab, " +
                 "CONCAT(reg_periksa.umurdaftar, ' ', reg_periksa.sttsumur) AS umur, " +
-                "reg_periksa.status_bayar, reg_periksa.status_poli, reg_periksa.kd_pj, reg_periksa.kd_poli, pasien.no_tlp, reg_periksa.kelas_rawat,reg_periksa.kelas_bpjs, " +
-                "(SELECT taskid FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat = reg_periksa.no_rawat ORDER BY waktu DESC LIMIT 1) AS taskid " +
+                "reg_periksa.status_bayar, reg_periksa.status_poli, reg_periksa.kd_pj, reg_periksa.kd_poli, pasien.no_tlp, reg_periksa.kelas_rawat, reg_periksa.kelas_bpjs, " +
+                "(SELECT taskid FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat = reg_periksa.no_rawat ORDER BY waktu DESC LIMIT 1) AS taskid, " +
+                "CASE WHEN bridging_sep.no_sep IS NOT NULL AND bridging_sep.no_sep <> '' THEN 'Ada' ELSE '-' END AS status_sep " +
                 "FROM reg_periksa " +
                 "INNER JOIN dokter ON reg_periksa.kd_dokter = dokter.kd_dokter " +
                 "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
                 "INNER JOIN poliklinik ON reg_periksa.kd_poli = poliklinik.kd_poli " +
                 "INNER JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj " +
-                "WHERE reg_periksa.tgl_registrasi BETWEEN ? AND ? AND reg_periksa.status_lanjut = 'Ralan' " + tampildiagnosa + 
+                "LEFT JOIN bridging_sep ON reg_periksa.no_rawat = bridging_sep.no_rawat " +
+                "WHERE reg_periksa.tgl_registrasi BETWEEN ? AND ? AND reg_periksa.status_lanjut = 'Ralan' " + tampildiagnosa +
                 (semua ? "" : " AND reg_periksa.kd_pj LIKE ? AND poliklinik.nm_poli LIKE ? AND dokter.nm_dokter LIKE ? " +
-                "AND reg_periksa.stts LIKE ? AND reg_periksa.status_bayar LIKE ? AND " +
-                "(reg_periksa.no_reg LIKE ? OR reg_periksa.no_rawat LIKE ? OR reg_periksa.tgl_registrasi LIKE ? " +
-                "OR reg_periksa.kd_dokter LIKE ? OR dokter.nm_dokter LIKE ? OR reg_periksa.no_rkm_medis LIKE ? " +
-                "OR pasien.nm_pasien LIKE ? OR poliklinik.nm_poli LIKE ? OR " +
-                "reg_periksa.p_jawab LIKE ? OR penjab.png_jawab LIKE ? OR reg_periksa.almt_pj LIKE ? " +
-                "OR reg_periksa.status_bayar LIKE ? OR reg_periksa.hubunganpj LIKE ?) ") +
-                terbitsep + 
+                        "AND reg_periksa.stts LIKE ? AND reg_periksa.status_bayar LIKE ? AND " +
+                        "(reg_periksa.no_reg LIKE ? OR reg_periksa.no_rawat LIKE ? OR reg_periksa.tgl_registrasi LIKE ? " +
+                        "OR reg_periksa.kd_dokter LIKE ? OR dokter.nm_dokter LIKE ? OR reg_periksa.no_rkm_medis LIKE ? " +
+                        "OR pasien.nm_pasien LIKE ? OR poliklinik.nm_poli LIKE ? OR " +
+                        "reg_periksa.p_jawab LIKE ? OR penjab.png_jawab LIKE ? OR reg_periksa.almt_pj LIKE ? " +
+                        "OR reg_periksa.status_bayar LIKE ? OR reg_periksa.hubunganpj LIKE ?) ") +
+                terbitsep +
                 "ORDER BY " + order);
 
-        try {
-            pskasir.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
-            pskasir.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
-            if (!semua) {
-                pskasir.setString(3, "%" + caripenjab + "%");
-                pskasir.setString(4, "%" + CrPoli.getText() + "%");
-                pskasir.setString(5, "%" + CrPtg.getText() + "%");
-                pskasir.setString(6, "%" + cmbStatus.getSelectedItem().toString().replaceAll("Semua", "") + "%");
-                pskasir.setString(7, "%" + cmbStatusBayar.getSelectedItem().toString().replaceAll("Semua", "") + "%");
-                pskasir.setString(8, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(9, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(10, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(11, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(12, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(13, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(14, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(15, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(16, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(17, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(18, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(19, "%" + TCari.getText().trim() + "%");
-                pskasir.setString(20, "%" + TCari.getText().trim() + "%");
-            }
+            try {
+                pskasir.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                pskasir.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!semua) {
+                    pskasir.setString(3, "%" + caripenjab + "%");
+                    pskasir.setString(4, "%" + CrPoli.getText() + "%");
+                    pskasir.setString(5, "%" + CrPtg.getText() + "%");
+                    pskasir.setString(6, "%" + cmbStatus.getSelectedItem().toString().replaceAll("Semua", "") + "%");
+                    pskasir.setString(7, "%" + cmbStatusBayar.getSelectedItem().toString().replaceAll("Semua", "") + "%");
+                    pskasir.setString(8, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(9, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(10, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(11, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(12, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(13, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(14, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(15, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(16, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(17, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(18, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(19, "%" + TCari.getText().trim() + "%");
+                    pskasir.setString(20, "%" + TCari.getText().trim() + "%");
+                }
 
-            rskasir = pskasir.executeQuery();
-            while (rskasir.next()) {
-                tabModekasir.addRow(new String[] {
-                    rskasir.getString(5), rskasir.getString(6), rskasir.getString(7), 
-                    rskasir.getString(8) + " (" + rskasir.getString("umur") + ")", rskasir.getString(9), 
-                    rskasir.getString(10), rskasir.getString(11), rskasir.getString(12), 
-                    Valid.SetAngka(rskasir.getDouble(13)), rskasir.getString("png_jawab"), 
-                    rskasir.getString(14), rskasir.getString("no_rawat"), 
-                    rskasir.getString("tgl_registrasi"), rskasir.getString("jam_reg"), 
-                    rskasir.getString(1), rskasir.getString("status_bayar"), 
-                    rskasir.getString("status_poli"), rskasir.getString("kd_pj"), 
-                    rskasir.getString("kd_poli"), rskasir.getString("no_tlp"), 
-                    rskasir.getString("kelas_bpjs"),rskasir.getString("kelas_rawat"), rskasir.getString("taskid")  // Tambahkan taskid di sini
-                });
-            }                
+                rskasir = pskasir.executeQuery();
+                while (rskasir.next()) {
+                    tabModekasir.addRow(new String[] {
+                        rskasir.getString(5), rskasir.getString(6), rskasir.getString(7), 
+                        rskasir.getString(8) + " (" + rskasir.getString("umur") + ")", rskasir.getString(9), 
+                        rskasir.getString(10), rskasir.getString(11), rskasir.getString(12), 
+                        Valid.SetAngka(rskasir.getDouble(13)), rskasir.getString("png_jawab"), 
+                        rskasir.getString(14), rskasir.getString("no_rawat"), 
+                        rskasir.getString("tgl_registrasi"), rskasir.getString("jam_reg"), 
+                        rskasir.getString(1), rskasir.getString("status_bayar"), 
+                        rskasir.getString("status_poli"), rskasir.getString("kd_pj"), 
+                        rskasir.getString("kd_poli"), rskasir.getString("no_tlp"), 
+                        rskasir.getString("kelas_bpjs"),rskasir.getString("kelas_rawat"), rskasir.getString("taskid"), rskasir.getString("status_sep")  // Tambahkan taskid di sini
+                    });
+                }                
+            } catch(Exception e) {
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                if (rskasir != null) {
+                    rskasir.close();
+                } 
+                if (pskasir != null) {
+                    pskasir.close();
+                } 
+            }            
         } catch(Exception e) {
             System.out.println("Notifikasi : " + e);
-        } finally {
-            if (rskasir != null) {
-                rskasir.close();
-            } 
-            if (pskasir != null) {
-                pskasir.close();
-            } 
-        }            
-    } catch(Exception e) {
-        System.out.println("Notifikasi : " + e);
+        }
+        LCount.setText("" + tabModekasir.getRowCount());
     }
-    LCount.setText("" + tabModekasir.getRowCount());
-}
 
     
     private void tampilkasir2() {                   

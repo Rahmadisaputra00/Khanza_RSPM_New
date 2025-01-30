@@ -341,7 +341,7 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				<textElement textAlignment="Left">
 					<font fontName="Tahoma" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nm_dokter}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{dokter}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="65" y="40" width="428" height="20" uuid="08eba06f-10a4-481c-995e-9a65f6c86577"/>

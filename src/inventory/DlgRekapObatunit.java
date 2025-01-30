@@ -26,7 +26,7 @@ import simrskhanza.DlgCariunit;
 import simrskhanza.DlgCariCaraBayar;
 
 public class DlgRekapObatunit extends javax.swing.JDialog {
-    private final DefaultTableModel tabMode;
+    private final DefaultTableModel tabMode,tabMode2;
     private sekuel Sequel=new sekuel();
     private validasi Valid=new validasi();
     private Connection koneksi=koneksiDB.condb();
@@ -77,7 +77,35 @@ public class DlgRekapObatunit extends javax.swing.JDialog {
         }
         tbDokter.setDefaultRenderer(Object.class, new WarnaTable());  
         
- 
+        tabMode2=new DefaultTableModel(null,new Object[]{"No.","Tanggal","No.RM","Nama Pasien","Jml","Nama Obat","Biaya Obat","Harga Beli","Embalase","Tuslah","Total","Asal Obat","Kategori","Tanggal Beri","DPJP"}){
+              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+        };
+        tbDokter1.setModel(tabMode2);
+
+        tbDokter1.setPreferredScrollableViewportSize(new Dimension(800,800));
+        tbDokter1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+        for (i = 0;i < 15; i++) {
+            TableColumn column = tbDokter1.getColumnModel().getColumn(i);
+            if(i==0){
+                column.setPreferredWidth(35);
+            }else if(i==1){
+                column.setPreferredWidth(70);
+            }else if(i==2){
+                column.setPreferredWidth(60);
+            }else if(i==3){
+                column.setPreferredWidth(170);
+            }else if(i==4){
+                column.setPreferredWidth(40);
+            }else if(i==5){
+                column.setPreferredWidth(230);
+            }else if(i==14){
+                column.setPreferredWidth(230);
+            }else{
+                column.setPreferredWidth(80);
+            }
+        }
+        tbDokter1.setDefaultRenderer(Object.class, new WarnaTable());        
         
         penjab.addWindowListener(new WindowListener() {
             @Override
@@ -172,7 +200,7 @@ public class DlgRekapObatunit extends javax.swing.JDialog {
             @Override
             public void windowDeactivated(WindowEvent e) {}
         });
-        
+         
         golongan.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {}
@@ -302,6 +330,8 @@ public class DlgRekapObatunit extends javax.swing.JDialog {
         TabRawat1 = new javax.swing.JTabbedPane();
         scrollPane4 = new widget.ScrollPane();
         tbDokter = new widget.Table();
+        scrollPane5 = new widget.ScrollPane();
+        tbDokter1 = new widget.Table();
 
         Kd2.setName("Kd2"); // NOI18N
         Kd2.setPreferredSize(new java.awt.Dimension(207, 23));
@@ -675,7 +705,29 @@ public class DlgRekapObatunit extends javax.swing.JDialog {
 
         TabRawat1.addTab("Tanggal Masuk", scrollPane4);
 
+        scrollPane5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        scrollPane5.setName("scrollPane5"); // NOI18N
+        scrollPane5.setOpaque(true);
+
+        tbDokter1.setAutoCreateRowSorter(true);
+        tbDokter1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        tbDokter1.setName("tbDokter1"); // NOI18N
+        scrollPane5.setViewportView(tbDokter1);
+
+        TabRawat1.addTab("Tanggal Keluar", scrollPane5);
+
         internalFrame1.add(TabRawat1, java.awt.BorderLayout.CENTER);
+        TabRawat1.getAccessibleContext().setAccessibleName("Tanggal Keluar");
 
         getContentPane().add(internalFrame1, java.awt.BorderLayout.CENTER);
 
@@ -758,6 +810,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         status.setSelectedIndex(0);
         if(TabRawat1.getSelectedIndex()==0){
            prosesCari();
+        }else if(TabRawat1.getSelectedIndex()==1){
+           prosesCari2();
         }
             
     }//GEN-LAST:event_BtnAllActionPerformed
@@ -773,6 +827,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
         if(TabRawat1.getSelectedIndex()==0){
            prosesCari();
+        }else if(TabRawat1.getSelectedIndex()==1){
+           prosesCari2();
         }
 }//GEN-LAST:event_BtnCariActionPerformed
 
@@ -921,8 +977,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private widget.TextBox nmpenjab;
     private widget.panelisi panelisi1;
     private widget.ScrollPane scrollPane4;
+    private widget.ScrollPane scrollPane5;
     private widget.ComboBox status;
     private widget.Table tbDokter;
+    private widget.Table tbDokter1;
     // End of variables declaration//GEN-END:variables
 
 //    private void prosesCari() {             
@@ -1243,216 +1301,429 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
 //}
     
     private void prosesCari() {
-    PreparedStatement psreg = null;
-    ResultSet rsreg = null;
+        PreparedStatement psreg = null;
+        ResultSet rsreg = null;
 
-    try {
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        Valid.tabelKosong(tabMode);
-        
-        // Memastikan query yang benar
-        // Memastikan query yang benar
-    if ((status.getSelectedIndex() == 0) && nmpenjab.getText().equals("") && nmasal.getText().equals("") && TCari.getText().equals("")) {
-        psreg = koneksi.prepareStatement(
-            "SELECT reg_periksa.tgl_registrasi, reg_periksa.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien " +
-            "FROM reg_periksa " +
-            "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
-            "WHERE reg_periksa.stts <> 'Batal' AND reg_periksa.tgl_registrasi BETWEEN ? AND ? " +
-            "ORDER BY reg_periksa.tgl_registrasi");
-    } else {
-        psreg = koneksi.prepareStatement(
-            "SELECT reg_periksa.tgl_registrasi, reg_periksa.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien " +
-            "FROM reg_periksa " +
-            "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
-            "INNER JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj " +
-            "WHERE reg_periksa.stts <> 'Batal' AND reg_periksa.tgl_registrasi BETWEEN ? AND ? " +
-            "AND reg_periksa.status_lanjut LIKE ? " +
-            "AND CONCAT(reg_periksa.kd_pj, penjab.png_jawab) LIKE ? " +
-            "AND (reg_periksa.no_rkm_medis LIKE ? OR pasien.nm_pasien LIKE ?) " +
-            "ORDER BY reg_periksa.tgl_registrasi");
-    }
+        try {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            Valid.tabelKosong(tabMode);
 
-    try {
-        // Set parameter untuk query tanpa filter tambahan
-        if ((status.getSelectedIndex() == 0) && nmpenjab.getText().equals("") && TCari.getText().equals("")) {
-            psreg.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + "")); // Tanggal mulai
-            psreg.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + "")); // Tanggal akhir
+            // Memastikan query yang benar
+            // Memastikan query yang benar
+        if ((status.getSelectedIndex() == 0) && nmpenjab.getText().equals("") && nmasal.getText().equals("") && TCari.getText().equals("")) {
+            psreg = koneksi.prepareStatement(
+                "SELECT reg_periksa.tgl_registrasi, reg_periksa.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien " +
+                "FROM reg_periksa " +
+                "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
+                "WHERE reg_periksa.stts <> 'Batal' AND reg_periksa.tgl_registrasi BETWEEN ? AND ? " +
+                "ORDER BY reg_periksa.tgl_registrasi");
         } else {
-            // Set parameter untuk query dengan filter tambahan
-            psreg.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + "")); // Tanggal mulai
-            psreg.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + "")); // Tanggal akhir
-            
-            // Filter status
-            String statusLanjut = status.getSelectedItem().toString()
-                .replaceAll("Obat Rawat Jalan", "Ralan")
-                .replaceAll("Obat Rawat Inap", "Ranap")
-                .replaceAll("Semua Status", "");
-            psreg.setString(3, "%" + statusLanjut + "%");
-            
-            // Filter kode penjamin
-            psreg.setString(4, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
-            
-            // Filter nomor rekam medis atau nama pasien
-            String cariText = TCari.getText().trim();
-            psreg.setString(5, "%" + cariText + "%"); // Untuk no_rkm_medis
-            psreg.setString(6, "%" + cariText + "%"); // Untuk nm_pasien
+            psreg = koneksi.prepareStatement(
+                "SELECT reg_periksa.tgl_registrasi, reg_periksa.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien " +
+                "FROM reg_periksa " +
+                "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
+                "INNER JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj " +
+                "WHERE reg_periksa.stts <> 'Batal' AND reg_periksa.tgl_registrasi BETWEEN ? AND ? " +
+                "AND reg_periksa.status_lanjut LIKE ? " +
+                "AND CONCAT(reg_periksa.kd_pj, penjab.png_jawab) LIKE ? " +
+                "AND (reg_periksa.no_rkm_medis LIKE ? OR pasien.nm_pasien LIKE ?) " +
+                "ORDER BY reg_periksa.tgl_registrasi");
         }
 
-            rsreg = psreg.executeQuery();
-            int i = 1;
-            
+        try {
+            // Set parameter untuk query tanpa filter tambahan
+            if ((status.getSelectedIndex() == 0) && nmpenjab.getText().equals("") && TCari.getText().equals("")) {
+                psreg.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + "")); // Tanggal mulai
+                psreg.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + "")); // Tanggal akhir
+            } else {
+                // Set parameter untuk query dengan filter tambahan
+                psreg.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + "")); // Tanggal mulai
+                psreg.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + "")); // Tanggal akhir
 
-            while (rsreg.next()) {
-                double ttlbiaya = 0, ttlmodal = 0, ttlembalase = 0, ttltuslah = 0, ttltotal = 0;
-                // Query obat berdasarkan kondisi
-                PreparedStatement psobat = koneksi.prepareStatement(
-                    "SELECT " +
-                    "detail_pemberian_obat.kode_brng, " +                  // Index 1
-                    "databarang.nama_brng, " +                             // Index 2
-                    "detail_pemberian_obat.jml AS jml, " +                 // Index 3
-                    "(detail_pemberian_obat.total - (detail_pemberian_obat.embalase + detail_pemberian_obat.tuslah)) AS biaya, " +  // Index 4
-                    "(detail_pemberian_obat.h_beli * detail_pemberian_obat.jml) AS modal, " +                                       // Index 5
-                    "detail_pemberian_obat.embalase AS embalase, " +       // Index 6
-                    "detail_pemberian_obat.tuslah AS tuslah, " +           // Index 7
-                    "detail_pemberian_obat.total AS total, " +            // Index 8
-                    "detail_pemberian_obat.asal_resep AS asal_resep, " +   // Index 9
-                    "CASE " +
-                    "WHEN detail_pemberian_obat.no_rawat IS NOT NULL THEN 'Obat Rawatan' " +
-                    "ELSE 'Obat Lain' END AS kategori, " +                // Index 10
-                    "detail_pemberian_obat.tgl_perawatan, " +             // Index 11
-                    "dokter.nm_dokter " +                                 // Index 12
-                    "FROM detail_pemberian_obat " +
-                    "INNER JOIN reg_periksa ON detail_pemberian_obat.no_rawat = reg_periksa.no_rawat " +
-                    "INNER JOIN databarang ON detail_pemberian_obat.kode_brng = databarang.kode_brng " +
-                    "LEFT JOIN dpjp_ranap ON dpjp_ranap.no_rawat = reg_periksa.no_rawat " +
-                    "LEFT JOIN dokter ON dpjp_ranap.kd_dokter = dokter.kd_dokter " +
-                    "WHERE reg_periksa.no_rawat = ? " +
-                    "ORDER BY detail_pemberian_obat.tgl_perawatan"
-                );
+                // Filter status
+                String statusLanjut = status.getSelectedItem().toString()
+                    .replaceAll("Obat Rawat Jalan", "Ralan")
+                    .replaceAll("Obat Rawat Inap", "Ranap")
+                    .replaceAll("Semua Status", "");
+                psreg.setString(3, "%" + statusLanjut + "%");
 
-                // Menyetel parameter
-                psobat.setString(1, rsreg.getString("no_rawat"));
-                ResultSet rsobat = psobat.executeQuery();
+                // Filter kode penjamin
+                psreg.setString(4, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
 
-                // Memproses hasil
-                while (rsobat.next()) {
-                    tabMode.addRow(new String[]{
-                        String.valueOf(i++), rsreg.getString("tgl_registrasi"),
-                        rsreg.getString("no_rkm_medis"), rsreg.getString("nm_pasien"),
-                        rsobat.getString(3),                    // Jumlah
-                        rsobat.getString(1) + " " + rsobat.getString(2),  // Kode dan Nama Barang
-                        Valid.SetAngka(rsobat.getDouble(4)),    // Biaya
-                        Valid.SetAngka(rsobat.getDouble(5)),    // Modal
-                        Valid.SetAngka(rsobat.getDouble(6)),    // Embalase
-                        Valid.SetAngka(rsobat.getDouble(7)),    // Tuslah
-                        Valid.SetAngka(rsobat.getDouble(8)),    // Total
-                        rsobat.getString(9),                    // Asal Resep
-                        rsobat.getString(10),                   // Kategori
-                        rsobat.getString(11),                   // Tanggal Pemberian
-                        rsobat.getString(12)                    // Nama Dokter
-                    });
-                    ttlbiaya += rsobat.getDouble(4);
-                    ttlembalase += rsobat.getDouble(6);
-                    ttltuslah += rsobat.getDouble(7);
-                    ttlmodal += rsobat.getDouble(5);
-                    ttltotal += rsobat.getDouble(8);
-                }
-                rsobat.close();
-                psobat.close();
-
-
-                // Query resep pulang
-                PreparedStatement psResepPulang = koneksi.prepareStatement(
-                    "SELECT " +
-                    "resep_pulang.kode_brng, " +                        // Index 1
-                    "databarang.nama_brng, " +                          // Index 2
-                    "resep_pulang.jml_barang, " +                       // Index 3
-                    "SUM(resep_pulang.total) AS biaya, " +              // Index 4
-                    "databarang.h_beli, " +                             // Index 5
-                    "resep_pulang.total, " +                            // Index 6
-                    "resep_pulang.asal_resep, " +                       // Index 7
-                    "CASE WHEN resep_pulang.no_rawat IS NOT NULL THEN 'Obat Pulang' ELSE 'Obat Lain' END AS kategori, " + // Index 8
-                    "resep_pulang.tanggal, " +                          // Index 9
-                    "dokter.nm_dokter " +                               // Index 10
-                    "FROM resep_pulang " +
-                    "INNER JOIN databarang ON resep_pulang.kode_brng = databarang.kode_brng " +
-                    "LEFT JOIN reg_periksa ON resep_pulang.no_rawat = reg_periksa.no_rawat " +
-                    "LEFT JOIN dpjp_ranap ON dpjp_ranap.no_rawat = reg_periksa.no_rawat " +
-                    "LEFT JOIN dokter ON dpjp_ranap.kd_dokter = dokter.kd_dokter " +
-                    "WHERE resep_pulang.no_rawat = ? " +
-                    "GROUP BY " +
-                    "resep_pulang.kode_brng, " +
-                    "databarang.nama_brng, " +
-                    "resep_pulang.jml_barang, " +
-                    "databarang.h_beli, " +
-                    "resep_pulang.total, " +
-                    "resep_pulang.asal_resep, " +
-                    "resep_pulang.no_rawat, " +
-                    "dokter.nm_dokter " +
-                    "ORDER BY resep_pulang.tanggal");
-
-                psResepPulang.setString(1, rsreg.getString("no_rawat"));
-                ResultSet rsResepPulang = psResepPulang.executeQuery();
-
-
-                while (rsResepPulang.next()) {
-                    tabMode.addRow(new String[]{
-                        String.valueOf(i++), rsreg.getString("tgl_registrasi"),
-                        rsreg.getString("no_rkm_medis"), rsreg.getString("nm_pasien"),
-                        rsResepPulang.getString(3),                   // Jumlah Barang
-                        rsResepPulang.getString(1) + " " + rsResepPulang.getString(2),  // Kode dan Nama Barang
-                        Valid.SetAngka(rsResepPulang.getDouble(4)),   // Biaya
-                        Valid.SetAngka(rsResepPulang.getDouble(5)),   // Modal
-                        "0",                                         // Embalase (nilai 0)
-                        "0",                                         // Tuslah (nilai 0)
-                        Valid.SetAngka(rsResepPulang.getDouble(6)),   // Total
-                        rsResepPulang.getString(7),                  // Asal Resep
-                        rsResepPulang.getString(8),                  // Kategori
-                        rsResepPulang.getString(9),                  // Tanggal Beri
-                        rsResepPulang.getString(10)                  // Nama Dokter
-                    });
-                }
-
-
-                rsResepPulang.close();
-                psResepPulang.close();
-                
-                // Menampilkan total biaya, modal, dan total
-            tabMode.addRow(new String[]{
-                "Total", "", "", "", "", "", 
-                Valid.SetAngka(ttlbiaya), 
-                Valid.SetAngka(ttlmodal), 
-                Valid.SetAngka(ttlembalase), // Total Embalase
-                Valid.SetAngka(ttltuslah), // Total Tuslah
-                Valid.SetAngka(ttltotal), 
-                "", 
-                ""
-            });
+                // Filter nomor rekam medis atau nama pasien
+                String cariText = TCari.getText().trim();
+                psreg.setString(5, "%" + cariText + "%"); // Untuk no_rkm_medis
+                psreg.setString(6, "%" + cariText + "%"); // Untuk nm_pasien
             }
 
+                rsreg = psreg.executeQuery();
+                int i = 1;
+
+
+                while (rsreg.next()) {
+                    double ttlbiaya = 0, ttlmodal = 0, ttlembalase = 0, ttltuslah = 0, ttltotal = 0;
+                    // Query obat berdasarkan kondisi
+                    PreparedStatement psobat = koneksi.prepareStatement(
+                        "SELECT " +
+                        "detail_pemberian_obat.kode_brng, " +                  // Index 1
+                        "databarang.nama_brng, " +                             // Index 2
+                        "detail_pemberian_obat.jml AS jml, " +                 // Index 3
+                        "(detail_pemberian_obat.total - (detail_pemberian_obat.embalase + detail_pemberian_obat.tuslah)) AS biaya, " +  // Index 4
+                        "(detail_pemberian_obat.h_beli * detail_pemberian_obat.jml) AS modal, " +                                       // Index 5
+                        "detail_pemberian_obat.embalase AS embalase, " +       // Index 6
+                        "detail_pemberian_obat.tuslah AS tuslah, " +           // Index 7
+                        "detail_pemberian_obat.total AS total, " +            // Index 8
+                        "detail_pemberian_obat.asal_resep AS asal_resep, " +   // Index 9
+                        "CASE " +
+                        "WHEN detail_pemberian_obat.no_rawat IS NOT NULL THEN 'Obat Rawatan' " +
+                        "ELSE 'Obat Lain' END AS kategori, " +                // Index 10
+                        "detail_pemberian_obat.tgl_perawatan, " +             // Index 11
+                        "dokter.nm_dokter " +                                 // Index 12
+                        "FROM detail_pemberian_obat " +
+                        "INNER JOIN reg_periksa ON detail_pemberian_obat.no_rawat = reg_periksa.no_rawat " +
+                        "INNER JOIN databarang ON detail_pemberian_obat.kode_brng = databarang.kode_brng " +
+                        "LEFT JOIN dpjp_ranap ON dpjp_ranap.no_rawat = reg_periksa.no_rawat " +
+                        "LEFT JOIN dokter ON dpjp_ranap.kd_dokter = dokter.kd_dokter " +
+                        "WHERE reg_periksa.no_rawat = ? " +
+                        "ORDER BY detail_pemberian_obat.tgl_perawatan"
+                    );
+
+                    // Menyetel parameter
+                    psobat.setString(1, rsreg.getString("no_rawat"));
+                    ResultSet rsobat = psobat.executeQuery();
+
+                    // Memproses hasil
+                    while (rsobat.next()) {
+                        tabMode.addRow(new String[]{
+                            String.valueOf(i++), rsreg.getString("tgl_registrasi"),
+                            rsreg.getString("no_rkm_medis"), rsreg.getString("nm_pasien"),
+                            rsobat.getString(3),                    // Jumlah
+                            rsobat.getString(1) + " " + rsobat.getString(2),  // Kode dan Nama Barang
+                            Valid.SetAngka(rsobat.getDouble(4)),    // Biaya
+                            Valid.SetAngka(rsobat.getDouble(5)),    // Modal
+                            Valid.SetAngka(rsobat.getDouble(6)),    // Embalase
+                            Valid.SetAngka(rsobat.getDouble(7)),    // Tuslah
+                            Valid.SetAngka(rsobat.getDouble(8)),    // Total
+                            rsobat.getString(9),                    // Asal Resep
+                            rsobat.getString(10),                   // Kategori
+                            rsobat.getString(11),                   // Tanggal Pemberian
+                            rsobat.getString(12)                    // Nama Dokter
+                        });
+                        ttlbiaya += rsobat.getDouble(4);
+                        ttlembalase += rsobat.getDouble(6);
+                        ttltuslah += rsobat.getDouble(7);
+                        ttlmodal += rsobat.getDouble(5);
+                        ttltotal += rsobat.getDouble(8);
+                    }
+                    rsobat.close();
+                    psobat.close();
+
+                    // Query resep pulang
+                    PreparedStatement psResepPulang = koneksi.prepareStatement(
+                        "SELECT " +
+                        "resep_pulang.kode_brng, " +                        // Index 1
+                        "databarang.nama_brng, " +                          // Index 2
+                        "resep_pulang.jml_barang, " +                       // Index 3
+                        "SUM(resep_pulang.total) AS biaya, " +              // Index 4
+                        "databarang.h_beli, " +                             // Index 5
+                        "resep_pulang.total, " +                            // Index 6
+                        "resep_pulang.asal_resep, " +                       // Index 7
+                        "CASE WHEN resep_pulang.no_rawat IS NOT NULL THEN 'Obat Pulang' ELSE 'Obat Lain' END AS kategori, " + // Index 8
+                        "resep_pulang.tanggal, " +                          // Index 9
+                        "dokter.nm_dokter " +                               // Index 10
+                        "FROM resep_pulang " +
+                        "INNER JOIN databarang ON resep_pulang.kode_brng = databarang.kode_brng " +
+                        "LEFT JOIN reg_periksa ON resep_pulang.no_rawat = reg_periksa.no_rawat " +
+                        "LEFT JOIN dpjp_ranap ON dpjp_ranap.no_rawat = reg_periksa.no_rawat " +
+                        "LEFT JOIN dokter ON dpjp_ranap.kd_dokter = dokter.kd_dokter " +
+                        "WHERE resep_pulang.no_rawat = ? " +
+                        "GROUP BY " +
+                        "resep_pulang.kode_brng, " +
+                        "databarang.nama_brng, " +
+                        "resep_pulang.jml_barang, " +
+                        "databarang.h_beli, " +
+                        "resep_pulang.total, " +
+                        "resep_pulang.asal_resep, " +
+                        "resep_pulang.no_rawat, " +
+                        "dokter.nm_dokter " +
+                        "ORDER BY resep_pulang.tanggal");
+
+                    psResepPulang.setString(1, rsreg.getString("no_rawat"));
+                    ResultSet rsResepPulang = psResepPulang.executeQuery();
+
+
+                    while (rsResepPulang.next()) {
+                        tabMode.addRow(new String[]{
+                            String.valueOf(i++), rsreg.getString("tgl_registrasi"),
+                            rsreg.getString("no_rkm_medis"), rsreg.getString("nm_pasien"),
+                            rsResepPulang.getString(3),                   // Jumlah Barang
+                            rsResepPulang.getString(1) + " " + rsResepPulang.getString(2),  // Kode dan Nama Barang
+                            Valid.SetAngka(rsResepPulang.getDouble(4)),   // Biaya
+                            Valid.SetAngka(rsResepPulang.getDouble(5)),   // Modal
+                            "0",                                         // Embalase (nilai 0)
+                            "0",                                         // Tuslah (nilai 0)
+                            Valid.SetAngka(rsResepPulang.getDouble(6)),   // Total
+                            rsResepPulang.getString(7),                  // Asal Resep
+                            rsResepPulang.getString(8),                  // Kategori
+                            rsResepPulang.getString(9),                  // Tanggal Beri
+                            rsResepPulang.getString(10)                  // Nama Dokter
+                        });
+                    }
+
+
+                    rsResepPulang.close();
+                    psResepPulang.close();
+
+                    // Menampilkan total biaya, modal, dan total
+                tabMode.addRow(new String[]{
+                    "Total", "", "", "", "", "", 
+                    Valid.SetAngka(ttlbiaya), 
+                    Valid.SetAngka(ttlmodal), 
+                    Valid.SetAngka(ttlembalase), // Total Embalase
+                    Valid.SetAngka(ttltuslah), // Total Tuslah
+                    Valid.SetAngka(ttltotal), 
+                    "", 
+                    ""
+                });
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error: " + e);
+            } finally {
+                if (rsreg != null) {
+                    try {
+                        rsreg.close();
+                    } catch (SQLException e) {
+                        System.out.println("Error closing ResultSet: " + e);
+                    }
+                }
+                if (psreg != null) {
+                    try {
+                        psreg.close();
+                    } catch (SQLException e) {
+                        System.out.println("Error closing PreparedStatement: " + e);
+                    }
+                }
+                this.setCursor(Cursor.getDefaultCursor());
+            }
         } catch (SQLException e) {
             System.out.println("Error: " + e);
-        } finally {
-            if (rsreg != null) {
-                try {
-                    rsreg.close();
-                } catch (SQLException e) {
-                    System.out.println("Error closing ResultSet: " + e);
-                }
-            }
-            if (psreg != null) {
-                try {
-                    psreg.close();
-                } catch (SQLException e) {
-                    System.out.println("Error closing PreparedStatement: " + e);
-                }
-            }
-            this.setCursor(Cursor.getDefaultCursor());
         }
-    } catch (SQLException e) {
-        System.out.println("Error: " + e);
     }
-}
+    
+    private void prosesCari2() {
+        PreparedStatement psreg = null;
+        ResultSet rsreg = null;
+
+        try {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            Valid.tabelKosong(tabMode2);
+
+            // Memastikan query yang benar
+            // Memastikan query yang benar
+        if ((status.getSelectedIndex() == 0) && nmpenjab.getText().equals("") && nmasal.getText().equals("") && TCari.getText().equals("")) {
+            psreg = koneksi.prepareStatement(
+                "SELECT kamar_inap.tgl_keluar, reg_periksa.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien " +
+                "FROM kamar_inap " +
+                "INNER JOIN reg_periksa ON kamar_inap.no_rawat = reg_periksa.no_rawat " +
+                "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
+                "WHERE reg_periksa.stts <> 'Batal' AND kamar_inap.tgl_keluar BETWEEN ? AND ? " +
+                "ORDER BY kamar_inap.tgl_keluar");
+        } else {
+            psreg = koneksi.prepareStatement(
+                "SELECT kamar_inap.tgl_keluar, reg_periksa.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien " +
+                "FROM kamar_inap " +
+                "INNER JOIN reg_periksa ON kamar_inap.no_rawat = reg_periksa.no_rawat " +
+                "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
+                "INNER JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj " +
+                "WHERE reg_periksa.stts <> 'Batal' AND kamar_inap.tgl_keluar BETWEEN ? AND ? " +
+                "AND reg_periksa.status_lanjut LIKE ? " +
+                "AND CONCAT(reg_periksa.kd_pj, penjab.png_jawab) LIKE ? " +
+                "AND (reg_periksa.no_rkm_medis LIKE ? OR pasien.nm_pasien LIKE ?) " +
+                "ORDER BY kamar_inap.tgl_keluar");
+        }
+
+        try {
+            // Set parameter untuk query tanpa filter tambahan
+            if ((status.getSelectedIndex() == 0) && nmpenjab.getText().equals("") && TCari.getText().equals("")) {
+                psreg.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + "")); // Tanggal mulai
+                psreg.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + "")); // Tanggal akhir
+            } else {
+                // Set parameter untuk query dengan filter tambahan
+                psreg.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + "")); // Tanggal mulai
+                psreg.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + "")); // Tanggal akhir
+
+                // Filter status
+                String statusLanjut = status.getSelectedItem().toString()
+                    .replaceAll("Obat Rawat Jalan", "Ralan")
+                    .replaceAll("Obat Rawat Inap", "Ranap")
+                    .replaceAll("Semua Status", "");
+                psreg.setString(3, "%" + statusLanjut + "%");
+
+                // Filter kode penjamin
+                psreg.setString(4, "%" + kdpenjab.getText() + nmpenjab.getText() + "%");
+
+                // Filter nomor rekam medis atau nama pasien
+                String cariText = TCari.getText().trim();
+                psreg.setString(5, "%" + cariText + "%"); // Untuk no_rkm_medis
+                psreg.setString(6, "%" + cariText + "%"); // Untuk nm_pasien
+            }
+
+                rsreg = psreg.executeQuery();
+                int i = 1;
+
+
+                while (rsreg.next()) {
+                    double ttlbiaya = 0, ttlmodal = 0, ttlembalase = 0, ttltuslah = 0, ttltotal = 0;
+                    // Query obat berdasarkan kondisi
+                    PreparedStatement psobat = koneksi.prepareStatement(
+                        "SELECT " +
+                        "detail_pemberian_obat.kode_brng, " +                  // Index 1
+                        "databarang.nama_brng, " +                             // Index 2
+                        "detail_pemberian_obat.jml AS jml, " +                 // Index 3
+                        "(detail_pemberian_obat.total - (detail_pemberian_obat.embalase + detail_pemberian_obat.tuslah)) AS biaya, " +  // Index 4
+                        "(detail_pemberian_obat.h_beli * detail_pemberian_obat.jml) AS modal, " +                                       // Index 5
+                        "detail_pemberian_obat.embalase AS embalase, " +       // Index 6
+                        "detail_pemberian_obat.tuslah AS tuslah, " +           // Index 7
+                        "detail_pemberian_obat.total AS total, " +            // Index 8
+                        "detail_pemberian_obat.asal_resep AS asal_resep, " +   // Index 9
+                        "CASE " +
+                        "WHEN detail_pemberian_obat.no_rawat IS NOT NULL THEN 'Obat Rawatan' " +
+                        "ELSE 'Obat Lain' END AS kategori, " +                // Index 10
+                        "detail_pemberian_obat.tgl_perawatan, " +             // Index 11
+                        "dokter.nm_dokter " +                                 // Index 12
+                        "FROM detail_pemberian_obat " +
+                        "INNER JOIN reg_periksa ON detail_pemberian_obat.no_rawat = reg_periksa.no_rawat " +
+                        "INNER JOIN databarang ON detail_pemberian_obat.kode_brng = databarang.kode_brng " +
+                        "LEFT JOIN dpjp_ranap ON dpjp_ranap.no_rawat = reg_periksa.no_rawat " +
+                        "LEFT JOIN dokter ON dpjp_ranap.kd_dokter = dokter.kd_dokter " +
+                        "WHERE reg_periksa.no_rawat = ? " +
+                        "ORDER BY detail_pemberian_obat.tgl_perawatan"
+                    );
+
+                    // Menyetel parameter
+                    psobat.setString(1, rsreg.getString("no_rawat"));
+                    ResultSet rsobat = psobat.executeQuery();
+
+                    // Memproses hasil
+                    while (rsobat.next()) {
+                        tabMode2.addRow(new String[]{
+                            String.valueOf(i++), rsreg.getString("tgl_keluar"),
+                            rsreg.getString("no_rkm_medis"), rsreg.getString("nm_pasien"),
+                            rsobat.getString(3),                    // Jumlah
+                            rsobat.getString(1) + " " + rsobat.getString(2),  // Kode dan Nama Barang
+                            Valid.SetAngka(rsobat.getDouble(4)),    // Biaya
+                            Valid.SetAngka(rsobat.getDouble(5)),    // Modal
+                            Valid.SetAngka(rsobat.getDouble(6)),    // Embalase
+                            Valid.SetAngka(rsobat.getDouble(7)),    // Tuslah
+                            Valid.SetAngka(rsobat.getDouble(8)),    // Total
+                            rsobat.getString(9),                    // Asal Resep
+                            rsobat.getString(10),                   // Kategori
+                            rsobat.getString(11),                   // Tanggal Pemberian
+                            rsobat.getString(12)                    // Nama Dokter
+                        });
+                        ttlbiaya += rsobat.getDouble(4);
+                        ttlembalase += rsobat.getDouble(6);
+                        ttltuslah += rsobat.getDouble(7);
+                        ttlmodal += rsobat.getDouble(5);
+                        ttltotal += rsobat.getDouble(8);
+                    }
+                    rsobat.close();
+                    psobat.close();
+
+
+                    // Query resep pulang
+                    PreparedStatement psResepPulang = koneksi.prepareStatement(
+                        "SELECT " +
+                        "resep_pulang.kode_brng, " +                        // Index 1
+                        "databarang.nama_brng, " +                          // Index 2
+                        "resep_pulang.jml_barang, " +                       // Index 3
+                        "SUM(resep_pulang.total) AS biaya, " +              // Index 4
+                        "databarang.h_beli, " +                             // Index 5
+                        "resep_pulang.total, " +                            // Index 6
+                        "resep_pulang.asal_resep, " +                       // Index 7
+                        "CASE WHEN resep_pulang.no_rawat IS NOT NULL THEN 'Obat Pulang' ELSE 'Obat Lain' END AS kategori, " + // Index 8
+                        "resep_pulang.tanggal, " +                          // Index 9
+                        "dokter.nm_dokter " +                               // Index 10
+                        "FROM resep_pulang " +
+                        "INNER JOIN databarang ON resep_pulang.kode_brng = databarang.kode_brng " +
+                        "LEFT JOIN reg_periksa ON resep_pulang.no_rawat = reg_periksa.no_rawat " +
+                        "LEFT JOIN dpjp_ranap ON dpjp_ranap.no_rawat = reg_periksa.no_rawat " +
+                        "LEFT JOIN dokter ON dpjp_ranap.kd_dokter = dokter.kd_dokter " +
+                        "WHERE resep_pulang.no_rawat = ? " +
+                        "GROUP BY " +
+                        "resep_pulang.kode_brng, " +
+                        "databarang.nama_brng, " +
+                        "resep_pulang.jml_barang, " +
+                        "databarang.h_beli, " +
+                        "resep_pulang.total, " +
+                        "resep_pulang.asal_resep, " +
+                        "resep_pulang.no_rawat, " +
+                        "dokter.nm_dokter " +
+                        "ORDER BY resep_pulang.tanggal");
+
+                    psResepPulang.setString(1, rsreg.getString("no_rawat"));
+                    ResultSet rsResepPulang = psResepPulang.executeQuery();
+
+
+                    while (rsResepPulang.next()) {
+                        tabMode2.addRow(new String[]{
+                            String.valueOf(i++), rsreg.getString("tgl_keluar"),
+                            rsreg.getString("no_rkm_medis"), rsreg.getString("nm_pasien"),
+                            rsResepPulang.getString(3),                   // Jumlah Barang
+                            rsResepPulang.getString(1) + " " + rsResepPulang.getString(2),  // Kode dan Nama Barang
+                            Valid.SetAngka(rsResepPulang.getDouble(4)),   // Biaya
+                            Valid.SetAngka(rsResepPulang.getDouble(5)),   // Modal
+                            "0",                                         // Embalase (nilai 0)
+                            "0",                                         // Tuslah (nilai 0)
+                            Valid.SetAngka(rsResepPulang.getDouble(6)),   // Total
+                            rsResepPulang.getString(7),                  // Asal Resep
+                            rsResepPulang.getString(8),                  // Kategori
+                            rsResepPulang.getString(9),                  // Tanggal Beri
+                            rsResepPulang.getString(10)                  // Nama Dokter
+                        });
+                    }
+
+
+                    rsResepPulang.close();
+                    psResepPulang.close();
+
+                    // Menampilkan total biaya, modal, dan total
+                tabMode2.addRow(new String[]{
+                    "Total", "", "", "", "", "", 
+                    Valid.SetAngka(ttlbiaya), 
+                    Valid.SetAngka(ttlmodal), 
+                    Valid.SetAngka(ttlembalase), // Total Embalase
+                    Valid.SetAngka(ttltuslah), // Total Tuslah
+                    Valid.SetAngka(ttltotal), 
+                    "", 
+                    ""
+                });
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error: " + e);
+            } finally {
+                if (rsreg != null) {
+                    try {
+                        rsreg.close();
+                    } catch (SQLException e) {
+                        System.out.println("Error closing ResultSet: " + e);
+                    }
+                }
+                if (psreg != null) {
+                    try {
+                        psreg.close();
+                    } catch (SQLException e) {
+                        System.out.println("Error closing PreparedStatement: " + e);
+                    }
+                }
+                this.setCursor(Cursor.getDefaultCursor());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e);
+        }
+    }
  
     
     private void isForm(){

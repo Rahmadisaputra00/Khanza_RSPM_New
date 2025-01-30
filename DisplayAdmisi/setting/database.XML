@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database>
-    <url>jdbc:mysql://localhost:3306/sik</url>
-    <user>root</user>
-    <password></password>
+    <url>jdbc:mysql://192.168.1.254:3306/sik</url>
+    <user>Khanza</user>
+    <password>Ratra.1298</password>
 </database>

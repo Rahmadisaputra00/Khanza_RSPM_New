@@ -26,6 +26,7 @@
 	<parameter name="penyakit" class="java.lang.String"/>
 	<parameter name="nosakit" class="java.lang.String"/>
 	<parameter name="finger" class="java.lang.String"/>
+	<parameter name="dokter" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select reg_periksa.no_rawat,dokter.nm_dokter,pasien.keluarga,pasien.namakeluarga,pasien.tgl_lahir,pasien.jk,
  pasien.nm_pasien,pasien.jk,pasien.umur,pasien.pekerjaan,pasien.alamat
@@ -498,13 +499,6 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA["Panyabungan, "+new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date())]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="2" y="570" width="549" height="23" uuid="3c268645-064d-4e25-bed1-725785e89d4c"/>
-				<textElement textAlignment="Left">
-					<font fontName="Tahoma" size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nm_dokter}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="2" y="460" width="86" height="16" uuid="039d8b07-1ffb-4130-8603-35844498e66d"/>
 				<textElement>
@@ -513,6 +507,13 @@ SERTIFIKAT NOMOR : KARS-SERT/1078/VI/2024]]></text>
 				</textElement>
 				<text><![CDATA[Hormat Kami,]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="2" y="580" width="549" height="23" uuid="4c5b06ba-8d99-48e4-b1c8-72f53f806afa"/>
+				<textElement textAlignment="Left">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nm_dokter}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>
